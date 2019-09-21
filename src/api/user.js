@@ -1,8 +1,9 @@
 import request from '@/utils/request'
 
 export function login(data) {
+  console.log('api--->'+data);
   return request({
-    url: '/user/login',
+    url: 'manage/dologin',
     method: 'post',
     data
   })
@@ -10,7 +11,7 @@ export function login(data) {
 
 export function getInfo(token) {
   return request({
-    url: '/user/info',
+    url: 'manage/userInfo',
     method: 'get',
     params: { token }
   })
@@ -18,7 +19,7 @@ export function getInfo(token) {
 
 export function logout() {
   return request({
-    url: '/user/logout',
+    url: 'manage/logout',
     method: 'post'
   })
 }

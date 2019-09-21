@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import Vue from 'vue' // 引入Vue
 
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
@@ -8,12 +8,14 @@ import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 
 import '@/styles/index.scss' // global css
 
+import '@/icons' // icon
+
+import '@/permission' // permission control
+
+//  引入vue最核心的内容
 import App from './App'
 import store from './store'
 import router from './router'
-
-import '@/icons' // icon
-import '@/permission' // permission control
 
 /**
  * If you don't want to use mock-server
@@ -23,14 +25,15 @@ import '@/permission' // permission control
  * Currently MockJs will be used in the production environment,
  * please remove it before going online! ! !
  */
-import { mockXHR } from '../mock'
-if (process.env.NODE_ENV === 'production') {
-  mockXHR()
-}
+// import { mockXHR } from '../mock'
+// if (process.env.NODE_ENV === 'production') {
+//    mockXHR()
+// }
 
-// set ElementUI lang to EN
+// 设置使用ElementUI并设置语言为英文EN
 Vue.use(ElementUI, { locale })
 
+// 是否打印非必要的日志信息
 Vue.config.productionTip = false
 
 new Vue({
