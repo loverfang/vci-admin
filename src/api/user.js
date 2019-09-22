@@ -1,9 +1,8 @@
 import request from '@/utils/request'
 
 export function login(data) {
-  console.log('api--->'+data);
   return request({
-    url: 'manage/dologin',
+    url: 'manage/login',
     method: 'post',
     data
   })

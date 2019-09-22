@@ -20,6 +20,7 @@ service.interceptors.request.use(
       // please modify it according to the actual situation
       config.headers['EC-Token'] = getToken()
     }
+    console.log('发送请求前额外参数:' + config)
     return config
   },
   error => {
@@ -44,7 +45,7 @@ service.interceptors.response.use(
   response => {
     const res = response.data
 
-    alert("最先返回:" + res.flag);
+    console.log('返回的原始数据:' + res)
     // if the custom code is not 20000, it is judged as an error.
     if (res.flag !== 1) {
       Message({

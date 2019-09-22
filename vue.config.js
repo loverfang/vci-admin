@@ -30,7 +30,7 @@ module.exports = {
   // build时构建文件的目录 构建时传入 --no-clean 可关闭该行为
   outputDir: 'dist',
   // build时放置生成的静态资源 (js、css、img、fonts) 的 (相对于 outputDir 的) 目录
-  assetsDir: 'static',
+  assetsDir: 'res/admin/',
   // 是否在开发环境下通过 eslint-loader 在每次保存时 lint 代码 (在生产构建时禁用 eslint-loader)
   lintOnSave: process.env.NODE_ENV === 'development',
   // 如果你不需要生产环境的 source map，可以将其设置为 false 以加速生产环境构建
@@ -58,11 +58,11 @@ module.exports = {
     //   }
       '/api': {
         // 设置你调用的接口域名和端口号 别忘了加http
-        host: "0.0.0.0",
+        // host: "0.0.0.0",
         target: 'http://127.0.0.1:8888',
         changeOrigin: true,
         pathRewrite: {
-          '^/api': ''
+          '^/api': '/api'
           // 这里理解成用‘/api’代替target里面的地址，
           // 后面组件中我们掉接口时直接用api代替 比如我要调
           // 用'http://40.00.100.100:3002/user/add',

@@ -31,9 +31,9 @@ router.beforeEach(async(to, from, next) => {
         next()
       } else {
         try {
+          debugger
           // get user info
           await store.dispatch('user/getInfo')
-
           next()
         } catch (error) {
           // remove token and go to login page to re-login
@@ -42,11 +42,11 @@ router.beforeEach(async(to, from, next) => {
           next(`/login?redirect=${to.path}`)
           NProgress.done()
         }
+        next()
       }
     }
   } else {
     /* has no token*/
-    alert('拦截了');
     if (whiteList.indexOf(to.path) !== -1) {
       // in the free login whitelist, go directly
       next()

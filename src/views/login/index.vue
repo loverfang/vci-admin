@@ -11,10 +11,10 @@
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
+          ref="account"
+          v-model="loginForm.account"
+          placeholder="Account"
+          name="account"
           type="text"
           tabindex="1"
           auto-complete="on"
@@ -53,14 +53,18 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
-
+// import { validUsername } from '@/utils/validate'
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+    const validateAccount = (rule, value, callback) => {
+      // if (!validUsername(value)) {
+      //   callback(new Error('Please enter the correct user name'))
+      // } else {
+      //   callback()
+      // }
+      if (value.length <= 0) {
+        callback(new Error('The Account can not be null'))
       } else {
         callback()
       }
@@ -76,11 +80,11 @@ export default {
 
     return {
       loginForm: {
-        username: 'admin',
+        account: 'admin',
         password: '111111'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        account: [{ required: true, trigger: 'blur', validator: validateAccount }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       loading: false,

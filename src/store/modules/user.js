@@ -23,17 +23,17 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    const { account, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        alert('ol');
+      console.log('执行登录...')
+      login({ account: account.trim(), password: password }).then(response => {
+        console.log(response)
         const { data } = response
-        alert('sl')
         commit('SET_TOKEN', data.token)
         setToken(data.token)
         resolve()
       }).catch(error => {
-        alert('error-->' + error);
+        console.log('登录失败!' + error)
         reject(error)
       })
     })
@@ -49,10 +49,14 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { name, avatar } = data
+        debugger
+        const { empName, avatar } = data
 
-        commit('SET_NAME', name)
+        // 设置用户明
+        commit('SET_NAME', empName)
+        // 设置用户头像
         commit('SET_AVATAR', avatar)
+        // 刷新数据
         resolve(data)
       }).catch(error => {
         reject(error)

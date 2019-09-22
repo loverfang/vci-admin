@@ -49,116 +49,176 @@ export const constantRoutes = [
     redirect: '/dashboard',
     children: [{
       path: 'dashboard',
-      name: 'Dashboard',
+      name: '控制台',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '控制台', icon: 'dashboard' }
     }]
   },
-
   {
-    path: '/example',
+    path: '/banner',
     component: Layout,
     redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
+    name: 'Banner管理',
+    meta: { title: 'Banner管理', icon: 'example' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
+        path: 'indexbanner',
+        name: 'Banner',
         component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        meta: { title: '首页Banner', icon: 'table' }
+      }
+    ]
+  },
+  {
+    path: '/single',
+    component: Layout,
+    redirect: '/example/table',
+    name: 'singlePage',
+    meta: { title: '单页发布系统', icon: 'example' },
+    children: [
+      {
+        path: 'aboutus',
+        name: 'about Us',
+        component: () => import('@/views/table/index'),
+        meta: { title: 'About Us', icon: 'table' }
       },
       {
-        path: 'tree',
+        path: 'services',
+        name: 'our services',
+        component: () => import('@/views/table/index'),
+        meta: { title: 'Our Services', icon: 'table' }
+      },
+      {
+        path: 'clients',
+        name: 'Our Clients',
+        component: () => import('@/views/table/index'),
+        meta: { title: 'Our Services', icon: 'table' }
+      },
+      {
+        path: 'marketing',
+        name: 'Marketing With Us',
+        component: () => import('@/views/table/index'),
+        meta: { title: 'Marketing With Us', icon: 'table' }
+      },
+      {
+        path: 'contact',
+        name: 'Contact Us',
+        component: () => import('@/views/table/index'),
+        meta: { title: 'Contact Us', icon: 'table' }
+      }
+    ]
+  },
+  {
+    path: '/news',
+    component: Layout,
+    redirect: '/example/table',
+    name: 'newsPage',
+    meta: { title: '新闻发布系统', icon: 'example' },
+    children: [
+      {
+        path: 'insights',
+        name: 'VCI Insights',
+        component: () => import('@/views/table/index'),
+        meta: { title: 'VCI Insights', icon: 'table' }
+      },
+      {
+        path: 'events',
+        name: 'VCI events',
+        component: () => import('@/views/table/index'),
+        meta: { title: 'VCI events', icon: 'table' }
+      },
+      {
+        path: 'partners',
+        name: 'Partners',
+        component: () => import('@/views/table/index'),
+        meta: { title: 'Partners', icon: 'table' }
+      },
+      {
+        path: 'stories',
+        name: 'Success Stories',
+        component: () => import('@/views/table/index'),
+        meta: { title: 'Success Stories', icon: 'table' }
+      }
+    ]
+  },
+  {
+    path: '/category',
+    component: Layout,
+    redirect: '/example/table',
+    name: 'category',
+    meta: { title: '供应商管理', icon: 'example' },
+    children: [
+      {
+        path: 'category',
+        name: 'Category',
+        component: () => import('@/views/table/index'),
+        meta: { title: 'Category管理', icon: 'table' }
+      },
+      {
+        path: 'vender',
+        name: 'Vender',
+        component: () => import('@/views/table/index'),
+        meta: { title: 'Vender 管理', icon: 'table' }
+      }
+    ]
+  },
+  {
+    path: '/videos',
+    component: Layout,
+    children: [
+      {
+        path: 'videos',
+        name: 'Videos',
+        component: () => import('@/views/form/index'),
+        meta: { title: '视频信息管理', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/members',
+    component: Layout,
+    children: [
+      {
+        path: 'members',
+        name: 'members',
+        component: () => import('@/views/form/index'),
+        meta: { title: '会员信息管理', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/pdfreport',
+    component: Layout,
+    children: [
+      {
+        path: 'members',
+        name: 'members',
+        component: () => import('@/views/form/index'),
+        meta: { title: 'PDF报表管理', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/system',
+    component: Layout,
+    redirect: '/example/table',
+    name: '系统设置',
+    meta: { title: '系统设置', icon: 'example' },
+    children: [
+      {
+        path: 'adminlist',
         name: 'Tree',
         component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
-  },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
+        meta: { title: '后台账号管理', icon: 'tree' }
       },
       {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        meta: { title: 'menu2' }
+        path: 'password',
+        name: 'Password',
+        component: () => import('@/views/table/index'),
+        meta: { title: '修改密码', icon: 'table' }
       }
     ]
   },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  },
-
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
