@@ -55,16 +55,14 @@ export const constantRoutes = [
     }]
   },
   {
-    path: '/banner',
+    path: '/',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Banner管理',
-    meta: { title: 'Banner管理', icon: 'example' },
+    redirect: '/banner',
     children: [
       {
-        path: 'indexbanner',
+        path: 'banner',
         name: 'Banner',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/banner/index'),
         meta: { title: '首页Banner', icon: 'table' }
       }
     ]
