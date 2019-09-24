@@ -68,39 +68,53 @@ export const constantRoutes = [
   {
     path: '/single',
     component: Layout,
-    redirect: '/example/table',
-    name: 'singlePage',
+    name: 'Single',
     meta: { title: '单页发布系统', icon: 'example' },
     children: [
       {
         path: 'aboutus',
-        name: 'about Us',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'About Us', icon: 'table' }
+        name: 'Aboutus',
+        component: () => import('@/views/signpage/index'),
+        meta: { title: 'About Us', icon: 'table' },
+        props: {
+          signType: '123'
+        }
       },
       {
         path: 'services',
-        name: 'our services',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Our Services', icon: 'table' }
+        name: 'Services',
+        component: () => import('@/views/signpage/index'),
+        meta: { title: 'Our Services', icon: 'table' },
+        props: {
+          signType: '456'
+        }
       },
       {
         path: 'clients',
-        name: 'Our Clients',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Our Services', icon: 'table' }
+        name: 'Clients',
+        component: () => import('@/views/signpage/index'),
+        meta: { title: 'Our Services', icon: 'table' },
+        props: {
+          signType: '789'
+        }
       },
       {
         path: 'marketing',
-        name: 'Marketing With Us',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Marketing With Us', icon: 'table' }
+        name: 'Marketing',
+        component: () => import('@/views/signpage/index'),
+        meta: { title: 'Marketing With Us', icon: 'table' },
+        props: {
+          signType: '890'
+        }
       },
       {
         path: 'contact',
-        name: 'Contact Us',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Contact Us', icon: 'table' }
+        name: 'Contact',
+        component: () => import('@/views/signpage/index'),
+        meta: { title: 'Contact Us', icon: 'table' },
+        props: {
+          signType: '111'
+        }
       }
     ]
   },
@@ -176,8 +190,8 @@ export const constantRoutes = [
     children: [
       {
         path: 'members',
-        name: 'members',
-        component: () => import('@/views/form/index'),
+        name: 'Members',
+        component: () => import('@/views/member/list'),
         meta: { title: '会员信息管理', icon: 'form' }
       }
     ]
@@ -211,7 +225,8 @@ export const constantRoutes = [
         path: 'password',
         name: 'Password',
         component: () => import('@/views/table/index'),
-        meta: { title: '修改密码', icon: 'table' }
+        meta: { title: '修改密码', icon: 'table',}
+
       }
     ]
   },
