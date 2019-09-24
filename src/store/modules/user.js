@@ -48,10 +48,7 @@ const actions = {
         if (!data) {
           reject('Verification failed, please Login again.')
         }
-
-        debugger
         const { empName, avatar } = data
-
         // 设置用户明
         commit('SET_NAME', empName)
         // 设置用户头像
