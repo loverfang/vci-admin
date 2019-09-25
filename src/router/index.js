@@ -53,9 +53,8 @@ export const constantRoutes = [
     }]
   },
   {
-    path: '/',
+    path: '/banner',
     component: Layout,
-    redirect: '/banner',
     children: [
       {
         path: 'banner',

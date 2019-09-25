@@ -27,13 +27,15 @@
           <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
+
       <el-table-column class-name="status-col" label="状态" width="110">
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">
-            {{ row.status }}
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.status | statusFilter">
+            {{ scope.row.status }}
           </el-tag>
         </template>
       </el-table-column>
+
       <el-table-column width="120px" align="center" label="电话">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
@@ -55,8 +57,8 @@
         </template>
       </el-table-column>
       <el-table-column min-width="300px" label="视频场次(剩余)">
-        <template slot-scope="{row}">
-          {{ row.status }}
+        <template slot-scope="scope">
+          {{ scope.row.name }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="Actions" width="120">
@@ -69,7 +71,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" align="right"/>
   </div>
 </template>
 
@@ -106,12 +108,17 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      alert(this.listQuery.name)
       fetchList(this.listQuery).then(response => {
         this.list = response.data.items
         this.total = response.data.total
         this.listLoading = false
       })
+    },
+    handleFilter() {
+      alert(1)
+    },
+    handleCreate() {
+      alert(2)
     }
   }
 }

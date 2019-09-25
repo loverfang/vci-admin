@@ -45,8 +45,10 @@ service.interceptors.response.use(
   response => {
     const res = response.data
 
-    console.log('返回的原始数据:' + res)
+    console.log('返回的原始结果:' + res)
+    console.log('返回的原始数据:' + res.flag)
     // if the custom code is not 20000, it is judged as an error.
+
     if (res.flag !== 1) {
       Message({
         message: res.message || 'Error',
