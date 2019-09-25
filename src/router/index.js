@@ -192,7 +192,7 @@ export const constantRoutes = [
         path: 'members',
         name: 'Members',
         component: () => import('@/views/member/list'),
-        meta: { title: '会员信息管理', icon: 'form' }
+        meta: { title: '会员信息', icon: 'form' }
       }
     ]
   },
