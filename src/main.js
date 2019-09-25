@@ -35,7 +35,6 @@ Vue.use(ElementUI, { locale })
 
 // 是否打印非必要的日志信息
 Vue.config.productionTip = false
-
 new Vue({
   el: '#app',
   router,
