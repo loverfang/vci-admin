@@ -11,61 +11,77 @@
     </div>
 
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
-      <el-table-column align="center" label="编号" width="80">
+      <el-table-column align="center" label="编号" min-width="5%">
         <template slot-scope="scope">
           <span>{{ scope.row.memid }}</span>
         </template>
       </el-table-column>
-      <el-table-column width="180px" align="center" label="用户名">
+      <el-table-column align="left" label="用户名" min-width="20%"  :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <span>{{ scope.row.username }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="120px" align="center" label="姓名">
+      <el-table-column align="left" label="姓名" min-width="15%" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column class-name="status-col" label="状态" width="110">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">
-            {{ scope.row.status }}
-          </el-tag>
+      <el-table-column class-name="status-col" label="状态"  min-width="8%" align="center" >
+
+        <template slot-scope="scope" >
+          <div v-if="scope.row.status === 'NORMAL'">
+            <el-tag :type="scope.row.status | statusFilter">
+              正常
+            </el-tag>
+          </div>
+          <div v-else-if="scope.row.status === 'WAITCHECK'">
+            <el-tag :type="scope.row.status | statusFilter">
+              待审核
+            </el-tag>
+          </div>
+          <div v-else>
+            <el-tag :type="scope.row.status | statusFilter">
+              已删除
+            </el-tag>
+          </div>
         </template>
       </el-table-column>
 
-      <el-table-column width="120px" align="center" label="电话">
+      <el-table-column align="center" label="电话" min-width="12%">
         <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
+          <span>{{ scope.row.phone }}</span>
         </template>
       </el-table-column>
-      <el-table-column width="120px" align="center" label="邮箱">
+      <el-table-column align="center" label="邮箱" min-width="20%" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
+          <span>{{ scope.row.email }}</span>
         </template>
       </el-table-column>
-      <el-table-column width="100px" label="任职公司">
+      <el-table-column label="任职公司" min-width="25%">
         <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
+          <span>{{ scope.row.company }}</span>
         </template>
       </el-table-column>
-      <el-table-column width="100px" label="工作职位">
+      <el-table-column label="工作职位" min-width="20%" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
+          <span>{{ scope.row.jobtitle }}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="300px" label="视频场次(剩余)">
+      <el-table-column label="视频场次(剩余)" min-width="8%" align="center">
         <template slot-scope="scope">
-          {{ scope.row.name }}
+          {{ scope.row.avldays }}次
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Actions" width="120">
+      <el-table-column align="center" label="操作"  min-width="30%">
         <template slot-scope="scope">
           <router-link :to="'/example/edit/'+scope.row.id">
             <el-button type="primary" size="small" icon="el-icon-edit">
-              Edit
+              编辑
+            </el-button>
+            <el-button type=" " size="small" icon="el-icon-delete">
+              删除
             </el-button>
           </router-link>
         </template>
@@ -78,15 +94,15 @@
 <script>
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import { fetchList } from '@/api/member' // 引入需要请求的路径
+
 export default {
   name: 'MemberList',
   components: { Pagination },
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
+        NORMAL: 'success',
+        WAITCHECK: 'warning'
       }
       return statusMap[status]
     }
@@ -97,8 +113,9 @@ export default {
       total: 0,
       listLoading: true,
       listQuery: {
+        name: null,
         page: 1,
-        limit: 20
+        limit: 10
       }
     }
   },
@@ -115,7 +132,8 @@ export default {
       })
     },
     handleFilter() {
-      alert(1)
+      this.listQuery.page = 1
+      this.getList()
     },
     handleCreate() {
       alert(2)

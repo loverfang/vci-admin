@@ -58,7 +58,7 @@ module.exports = {
     //   }
       [process.env.VUE_APP_BASE_API]: {
         // 设置你调用的接口域名和端口号 别忘了加http
-        // host: "0.0.0.0",
+        host: "0.0.0.0",
         target: 'http://127.0.0.1:8888',
         changeOrigin: true,
         pathRewrite: {
