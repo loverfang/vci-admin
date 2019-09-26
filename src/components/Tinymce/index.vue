@@ -1,6 +1,7 @@
 <template>
   <div :class="{fullscreen:fullscreen}" class="tinymce-container" :style="{width:containerWidth}">
     <textarea :id="tinymceId" class="tinymce-textarea" />
+    <!-- 最又边的图片上传图标 -->
     <div class="editor-custom-btn-container">
       <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK" />
     </div>
@@ -155,7 +156,7 @@ export default {
             _this.fullscreen = e.state
           })
         }
-        // 整合七牛上传
+        // 整合七牛上传,打开注解后,图片上传图标就有了选项卡
         // images_dataimg_filter(img) {
         //   setTimeout(() => {
         //     const $image = $(img);

@@ -1,22 +1,14 @@
 <template>
   <div id="app-contner">
-    <article-detail :is-edit="true" />
+    <signle-article-detail :is-edit="true" />
   </div>
 </template>
 
 <script>
-import ArticleDetail from './components/ArticleDetail'
+import SignleArticleDetail from './components/ArticleDetail'
 export default {
   name: 'SignArticleForm',
-  components: { ArticleDetail },
-  props: [ 'signType' ],
-  data() {
-    return {
-      pageName: '单页系统',
-    }
-  },
-  created() {
-    console.log('load over')
-  }
+  props: ['signType'], // 路由上传递过来的参数
+  components: { SignleArticleDetail }
 }
 </script>
