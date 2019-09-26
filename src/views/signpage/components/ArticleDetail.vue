@@ -38,16 +38,11 @@ import { validURL } from '@/utils/validate'
 
 const defaultForm = {
   status: 'draft',
-  title: '', // 文章题目
+  ptitle: '', // 文章题目
+  pkeywords: '', // 页面关键字
+  pdescription: '', // 页面描述
   content: '', // 文章内容
-  content_short: '', // 文章摘要
-  source_uri: '', // 文章外链
-  image_uri: '', // 文章图片
-  display_time: undefined, // 前台展示时间
-  id: undefined,
-  platforms: ['a-platform'],
-  comment_disabled: false,
-  importance: 0
+  ntype: '' // 新闻类型
 }
 
 export default {
