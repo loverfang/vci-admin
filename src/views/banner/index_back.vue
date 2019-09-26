@@ -18,9 +18,8 @@
       fit
       highlight-current-row
       style="width: 100%;"
-      @sort-change="sortChange"
-    >
-      <el-table-column label="编号" prop="id" sortable="custom" align="center" min-width="5%" :class-name="getSortClass( 'id' )">
+      @sort-change="sortChange">
+      <el-table-column label="编号" prop="id" sortable="custom" align="center" min-width="5%" :class-name="getSortClass('id')" >
         <template slot-scope="scope">
           <span>{{ scope.row.adid }}</span>
         </template>
@@ -226,7 +225,6 @@ export default {
         type: ''
       }
     },
-
     handleCreate() {
       this.resetTemp()
       this.dialogStatus = 'create'

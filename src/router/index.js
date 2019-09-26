@@ -224,8 +224,7 @@ export const constantRoutes = [
         path: 'password',
         name: 'Password',
         component: () => import('@/views/table/index'),
-        meta: { title: '修改密码', icon: 'table',}
-
+        meta: { title: '修改密码', icon: 'table' }
       }
     ]
   },

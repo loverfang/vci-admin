@@ -4,7 +4,6 @@ import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import locale from 'element-ui/lib/locale/lang/zh-CN' // lang i18n
 
 import '@/styles/index.scss' // global css
 
@@ -17,24 +16,13 @@ import App from './App'
 import store from './store'
 import router from './router'
 
-/**
- * If you don't want to use mock-server
- * you want to use MockJs for mock api
- * you can execute: mockXHR()
- *
- * Currently MockJs will be used in the production environment,
- * please remove it before going online! ! !
- */
-// import { mockXHR } from '../mock'
-// if (process.env.NODE_ENV === 'production') {
-//    mockXHR()
-// }
-
 // 设置使用ElementUI并设置语言为英文EN
-Vue.use(ElementUI, { locale })
+Vue.use(ElementUI)
 
-// 是否打印非必要的日志信息
-Vue.config.productionTip = false
+Vue.config.productionTip = false // 是否打印非必要的日志信息
+Vue.config.devtools = true // 确认是否允许用户打开开发调试工具，开发版本默认为true，生产版本默认为false。
+Vue.config.silent = false // 静默(取消)日志与警告提醒 !isDev [default false]
+
 new Vue({
   el: '#app',
   router,
