@@ -12,15 +12,15 @@
 
       <div class="createPost-main-container">
         <el-form-item style="margin-bottom: 40px;" label-width="120px" label="页面标题:">
-          <el-input v-model="postForm.ptitle" :rows="1" type="input" class="article-input" autosize placeholder="请输入页面标题" />
+          <el-input v-model="postForm.ptitle" :rows="1" type="input" class="article-input" autosize placeholder="请输入页面标题"/>
           <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}words</span>
         </el-form-item>
         <el-form-item style="margin-bottom: 40px;" label-width="120px" label="关键词:">
-          <el-input v-model="postForm.pkeywords" :rows="1" type="textarea" class="article-textarea" autosize placeholder="请输入页面关键词" />
+          <el-input v-model="postForm.pkeywords" :rows="1" type="input" class="article-input" autosize placeholder="请输入页面关键词" />
           <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}words</span>
         </el-form-item>
         <el-form-item style="margin-bottom: 40px;" label-width="120px" label="页面描述:">
-          <el-input v-model="postForm.pdescription" :rows="3" type="textarea" class="article-textarea" autosize placeholder="请输入页面描述内容" />
+          <el-input v-model="postForm.pdescription" :rows="10" type="textarea" class="article-textarea" autosize placeholder="请输入页面描述内容" />
           <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}words</span>
         </el-form-item>
         <el-form-item prop="content" style="margin-bottom: 30px;" >
@@ -34,8 +34,8 @@
 <script>
 import Tinymce from '@/components/Tinymce'
 import Sticky from '@/components/Sticky' // 粘性header组件
-import { validURL } from '@/utils/validate'
 
+import { fetchArticle, updateArticle } from '@/components/Tinymce'
 const defaultForm = {
   status: 'draft',
   ptitle: '', // 文章题目
@@ -66,49 +66,19 @@ export default {
         callback()
       }
     }
-    const validateSourceUri = (rule, value, callback) => {
-      if (value) {
-        if (validURL(value)) {
-          callback()
-        } else {
-          this.$message({
-            message: '外链url填写不正确',
-            type: 'error'
-          })
-          callback(new Error('外链url填写不正确'))
-        }
-      } else {
-        callback()
-      }
-    }
+
     return {
       postForm: Object.assign({}, defaultForm),
       loading: false,
-      userListOptions: [],
       rules: {
-        image_uri: [{ validator: validateRequire }],
-        title: [{ validator: validateRequire }],
-        content: [{ validator: validateRequire }],
-        source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
-      },
-      tempRoute: {}
+        ptitle: [{ validator: validateRequire }],
+        content: [{ validator: validateRequire }]
+      }
     }
   },
   computed: {
     contentShortLength() {
-      return this.postForm.content_short.length
-    },
-    displayTime: {
-      // set and get is useful when the data
-      // returned by the back end api is different from the front end
-      // back end return => "2013-06-25 06:59:25"
-      // front end need timestamp => 1372114765000
-      get() {
-        return (+new Date(this.postForm.display_time))
-      },
-      set(val) {
-        this.postForm.display_time = new Date(val)
-      }
+      return this.postForm.ptitle.length
     }
   },
   created() {
@@ -118,9 +88,6 @@ export default {
     } else {
       this.postForm = Object.assign({}, defaultForm)
     }
-    // Why need to make a copy of this.$route here?
-    // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
-    // https://github.com/PanJiaChen/vue-element-admin/issues/1221
     this.tempRoute = Object.assign({}, this.$route)
   },
   methods: {
@@ -149,9 +116,30 @@ export default {
     },
     submitForm() {
       console.log(this.postForm)
+      debugger
       this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
+
+          const tempData = Object.assign({}, this.temp)
+          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+          updateArticle(tempData).then(() => {
+            for (const v of this.list) {
+              if (v.id === this.temp.id) {
+                const index = this.list.indexOf(v)
+                this.list.splice(index, 1, this.temp)
+                break
+              }
+            }
+            this.dialogFormVisible = false
+            this.$notify({
+              title: 'Success',
+              message: 'Update Successfully',
+              type: 'success',
+              duration: 2000
+            })
+          })
+
           this.$notify({
             title: '成功',
             message: '发布文章成功',
@@ -181,12 +169,6 @@ export default {
         duration: 1000
       })
       this.postForm.status = 'draft'
-    },
-    getRemoteUserList(query) {
-      // searchUser(query).then(response => {
-      //   if (!response.data.items) return
-      //   this.userListOptions = response.data.items.map(v => v.name)
-      // })
     }
   }
 }
