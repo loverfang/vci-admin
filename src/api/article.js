@@ -18,7 +18,7 @@ export function fetchArticle(id) {
 
 export function fetchSingleArticle(ntype) {
   return request({
-    url: '/article/single',
+    url: 'manage/querySignleNews',
     method: 'get',
     params: { ntype }
   })
@@ -34,7 +34,7 @@ export function createArticle(data) {
 
 export function updateArticle(data) {
   return request({
-    url: '/article/update',
+    url: 'manage/updateSignleNews',
     method: 'post',
     data
   })

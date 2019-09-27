@@ -12,7 +12,7 @@
 
       <div class="createPost-main-container">
         <el-form-item style="margin-bottom: 40px;" label-width="120px" label="页面标题:">
-          <el-input v-model="postForm.ptitle" :rows="1" type="input" class="article-input" autosize placeholder="请输入页面标题"/>
+          <el-input v-model="postForm.ptitle" :rows="1" type="input" class="article-input" autosize placeholder="请输入页面标题" />
           <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}words</span>
         </el-form-item>
         <el-form-item style="margin-bottom: 40px;" label-width="120px" label="关键词:">
@@ -23,7 +23,7 @@
           <el-input v-model="postForm.pdescription" :rows="10" type="textarea" class="article-textarea" autosize placeholder="请输入页面描述内容" />
           <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}words</span>
         </el-form-item>
-        <el-form-item prop="content" style="margin-bottom: 30px;" >
+        <el-form-item prop="content" style="margin-bottom: 30px;">
           <Tinymce ref="editor" v-model="postForm.content" :height="400" />
         </el-form-item>
       </div>
@@ -35,7 +35,7 @@
 import Tinymce from '@/components/Tinymce'
 import Sticky from '@/components/Sticky' // 粘性header组件
 
-import { fetchArticle, updateArticle } from '@/components/Tinymce'
+import { fetchSingleArticle, updateArticle } from '@/api/article'
 const defaultForm = {
   status: 'draft',
   ptitle: '', // 文章题目
@@ -49,9 +49,8 @@ export default {
   name: 'SignleArticleDetail',
   components: { Tinymce, Sticky },
   props: {
-    isEdit: {
-      type: Boolean,
-      default: false
+    signType: {
+      default: ''
     }
   },
   data() {
@@ -66,7 +65,6 @@ export default {
         callback()
       }
     }
-
     return {
       postForm: Object.assign({}, defaultForm),
       loading: false,
@@ -82,93 +80,41 @@ export default {
     }
   },
   created() {
-    if (this.isEdit) {
-      const id = this.$route.params && this.$route.params.id
-      this.fetchData(id)
+    if (this.signType) {
+      this.fetchData(this.signType)
     } else {
       this.postForm = Object.assign({}, defaultForm)
     }
-    this.tempRoute = Object.assign({}, this.$route)
   },
   methods: {
-    fetchData(id) {
-      // fetchArticle(id).then(response => {
-      //   this.postForm = response.data
-      //   // just for test
-      //   this.postForm.title += `   Article Id:${this.postForm.id}`
-      //   this.postForm.content_short += `   Article Id:${this.postForm.id}`
-      //   // set tagsview title
-      //   this.setTagsViewTitle()
-      //   // set page title
-      //   this.setPageTitle()
-      // }).catch(err => {
-      //   console.log(err)
-      // })
-    },
-    setTagsViewTitle() {
-      const title = 'Edit Article'
-      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
-      this.$store.dispatch('tagsView/updateVisitedView', route)
-    },
-    setPageTitle() {
-      const title = 'Edit Article'
-      document.title = `${title} - ${this.postForm.id}`
+    fetchData(ntype) {
+      fetchSingleArticle(ntype).then(response => {
+        // 将查询出来的只放入到表单中
+        this.postForm = Object.assign({}, response.data)
+        this.loading = false
+      }).catch(err => {
+        console.log(err)
+      })
     },
     submitForm() {
-      console.log(this.postForm)
-      debugger
       this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
-
-          const tempData = Object.assign({}, this.temp)
-          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+          const tempData = Object.assign({}, this.postForm)
           updateArticle(tempData).then(() => {
-            for (const v of this.list) {
-              if (v.id === this.temp.id) {
-                const index = this.list.indexOf(v)
-                this.list.splice(index, 1, this.temp)
-                break
-              }
-            }
-            this.dialogFormVisible = false
             this.$notify({
-              title: 'Success',
-              message: 'Update Successfully',
+              title: '成功',
+              message: '发布文章成功',
               type: 'success',
               duration: 2000
             })
           })
-
-          this.$notify({
-            title: '成功',
-            message: '发布文章成功',
-            type: 'success',
-            duration: 2000
-          })
-          this.postForm.status = 'published'
           this.loading = false
         } else {
           console.log('error submit!!')
           return false
         }
       })
-    },
-    draftForm() {
-      if (this.postForm.content.length === 0 || this.postForm.title.length === 0) {
-        this.$message({
-          message: '请填写必要的标题和内容',
-          type: 'warning'
-        })
-        return
-      }
-      this.$message({
-        message: '保存成功',
-        type: 'success',
-        showClose: true,
-        duration: 1000
-      })
-      this.postForm.status = 'draft'
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div id="app-contner">
-    <signle-article-detail :is-edit="true" />
+    <signle-article-detail :sign-type="signType"/>
   </div>
 </template>
 

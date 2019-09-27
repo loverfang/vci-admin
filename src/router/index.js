@@ -76,7 +76,7 @@ export const constantRoutes = [
         component: () => import('@/views/signpage/index'),
         meta: { title: 'About Us', icon: 'table' },
         props: {
-          signType: '123'
+          signType: 'aboutus'
         }
       },
       {
@@ -85,7 +85,7 @@ export const constantRoutes = [
         component: () => import('@/views/signpage/index'),
         meta: { title: 'Our Services', icon: 'table' },
         props: {
-          signType: '456'
+          signType: 'ourservices'
         }
       },
       {
@@ -103,7 +103,7 @@ export const constantRoutes = [
         component: () => import('@/views/signpage/index'),
         meta: { title: 'Marketing With Us', icon: 'table' },
         props: {
-          signType: '890'
+          signType: 'marketingwithus'
         }
       },
       {
