@@ -6,6 +6,7 @@ Vue.use(Router)
 /* Layout */
 import Layout from '@/layout'
 
+import newsRouter from './modules/newsRouter'
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -92,9 +93,9 @@ export const constantRoutes = [
         path: 'clients',
         name: 'Clients',
         component: () => import('@/views/signpage/index'),
-        meta: { title: 'Our Services', icon: 'table' },
+        meta: { title: 'Our Clients', icon: 'table' },
         props: {
-          signType: '789'
+          signType: 'Our Clients'
         }
       },
       {
@@ -117,39 +118,89 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/news',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'newsPage',
-    meta: { title: '新闻发布系统', icon: 'example' },
-    children: [
-      {
-        path: 'insights',
-        name: 'VCI Insights',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'VCI Insights', icon: 'table' }
-      },
-      {
-        path: 'events',
-        name: 'VCI events',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'VCI events', icon: 'table' }
-      },
-      {
-        path: 'partners',
-        name: 'Partners',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Partners', icon: 'table' }
-      },
-      {
-        path: 'stories',
-        name: 'Success Stories',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Success Stories', icon: 'table' }
-      }
-    ]
-  },
+  newsRouter,
+
+  // {
+  //   path: '/news',
+  //   component: Layout,
+  //   name: 'newsPage',
+  //   meta: { title: '新闻发布系统', icon: 'example' },
+  //   children: [
+  //     {
+  //       path: 'insights',
+  //       name: 'Insights',
+  //       meta: { title: 'VCI Insights', icon: 'example' },
+  //       children: [
+  //         {
+  //           path: 'edit/:id(\\d+)',
+  //           component: () => import('@/views/news/editInsights'),
+  //           name: 'EditInsights',
+  //           meta: { title: 'EditInsights', noCache: true, activeMenu: '/news/insights' },
+  //           hidden: true
+  //         },
+  //         {
+  //           path: 'create',
+  //           component: () => import('@/views/news/addInsights'),
+  //           name: 'CreateInsights',
+  //           meta: { title: 'createInsights', icon: 'edit' },
+  //           hidden: true
+  //         },
+  //         {
+  //           path: 'list',
+  //           name: 'ListInsights',
+  //           component: () => import('@/views/news/insights'),
+  //           meta: { title: 'Insights List', icon: 'table' }
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       path: 'events',
+  //       name: 'VCI events',
+  //       component: () => import('@/views/news/events'),
+  //       meta: { title: 'VCI Events', icon: 'table' }
+  //     },
+  //     {
+  //       path: 'partners',
+  //       name: 'Partners',
+  //       component: () => import('@/views/news/partners'),
+  //       meta: { title: 'Partners', icon: 'table' }
+  //     },
+  //     {
+  //       path: 'stories',
+  //       name: 'Success Stories',
+  //       component: () => import('@/views/news/stories'),
+  //       meta: { title: 'Success Stories', icon: 'table' }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/example',
+  //   component: Layout,
+  //   redirect: '/example/list',
+  //   name: 'Example',
+  //   meta: { title: 'example',  icon: 'example' },
+  //   children: [
+  //     {
+  //       path: 'create',
+  //       component: () => import('@/views/example/create'),
+  //       name: 'CreateArticle',
+  //       meta: { title: 'createArticle', icon: 'edit' }
+  //     },
+  //     {
+  //       path: 'edit/:id(\\d+)',
+  //       component: () => import('@/views/example/edit'),
+  //       name: 'EditArticle',
+  //       meta: { title: 'editArticle', noCache: true, activeMenu: '/example/list' },
+  //       hidden: true
+  //     },
+  //     {
+  //       path: 'list',
+  //       component: () => import('@/views/example/list'),
+  //       name: 'ArticleList',
+  //       meta: { title: 'articleList', icon: 'list' }
+  //     }
+  //   ]
+  // },
   {
     path: '/category',
     component: Layout,
