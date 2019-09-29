@@ -5,7 +5,7 @@
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
-      <router-link :to="'/news/insights/ncreate'">
+      <router-link :to="{path:'/news/insights/create'}">
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit">
         添加
       </el-button>
@@ -46,7 +46,7 @@
       <el-table-column align="center" label="操作" min-width="25%">
         <template slot-scope="scope">
             <!-- 要在最右边区域切换显示页面就用router-link标签 -->
-            <router-link :to="'/news/insights/nedit/'+scope.row.nid">
+            <router-link :to="'/news/insights/edit/'+scope.row.nid">
               <el-button type="primary" size="small" icon="el-icon-edit">
                 编辑
               </el-button>

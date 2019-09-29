@@ -25,20 +25,20 @@
 
 <script>
 export default {
-name: 'EditorSlideUpload',
-props: {
-color: {
-type: String,
-default: '#1890ff'
-}
-},
-data () {
-return {
-dialogVisible: false,
-listObj: {},
-fileList: []
-}
-},
+  name: 'EditorSlideUpload',
+  props: {
+    color: {
+      type: String,
+      default: '#1890ff'
+    }
+  },
+  data () {
+    return {
+      dialogVisible: false,
+      listObj: {},
+      fileList: []
+    }
+  },
 methods: {
 checkAllSuccess () {
 return Object.keys(this.listObj).every(item => this.listObj[item].hasSuccess)
