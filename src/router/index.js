@@ -175,7 +175,7 @@ export const constantRoutes = [
         path: 'members',
         name: 'members',
         component: () => import('@/views/form/index'),
-        meta: { title: 'PDF报表管理', icon: 'form' }
+        meta: { title: 'PDF报表管理', icon: 'pdf' }
       }
     ]
   },

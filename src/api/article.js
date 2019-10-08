@@ -36,24 +36,6 @@ export function updateNewsSindex(data) {
   })
 }
 
-// 查询新闻图片列表
-export function fetchImgList(query) {
-  return request({
-    url: 'manage/newsImgList',
-    method: 'get',
-    params: query
-  })
-}
-
-// 查询新闻图片列表
-export function fetchPdfList(query) {
-  return request({
-    url: 'manage/newsPdfList',
-    method: 'get',
-    params: query
-  })
-}
-
 // 根据新闻ID查询新闻详情
 export function fetchNewsDetail(nid) {
   return request({
@@ -90,10 +72,3 @@ export function updateInsights(data) {
   })
 }
 
-export function savePhotosList(data) {
-  return request({
-    url: 'manage/savePhotos',
-    method: 'post',
-    data
-  })
-}

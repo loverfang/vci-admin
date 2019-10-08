@@ -32,23 +32,23 @@ const newsRouter = {
         },
         {
           path: 'imglist/:id(\\d+)',
-          component: () => import('@/views/news/insights/ImageList'),
+          component: () => import('@/views/news/insights/imglist'),
           name: 'InsightsImgList',
-          meta: { title: 'Insights ImgList' },
+          meta: { title: 'Insights 图片管理' },
           hidden: true
         },
         {
           path: 'pdflist/:id(\\d+)',
           component: () => import('@/views/news/insights/pdflist'),
           name: 'InsightsPdfList',
-          meta: { title: 'Insights PdfList' },
+          meta: { title: 'Insights PDF文件管理' },
           hidden: true
         },
         {
           path: 'list',
           component: () => import('@/views/news/insights/index'),
           name: 'InsightsList',
-          meta: { title: 'Insights 数据列表', icon: 'table' }
+          meta: { title: 'VCI Insights 管理', icon: 'list' }
         }
       ]
     }

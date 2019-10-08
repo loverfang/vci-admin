@@ -34,7 +34,7 @@
       </el-table-column>
       <el-table-column align="center" label="排序索引" min-width="8%">
         <template slot-scope="{row}">
-          <el-input v-model="row.sindex" size="small" class="sindex-input" />
+          <el-input v-model="row.sindex" size="small" class="sindex-input" @blur="handleModifyIndex(row)"/>
         </template>
       </el-table-column>
 
@@ -53,7 +53,8 @@
 <script>
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import NewsImageUpload from '@/components/ImageUpload' // Secondary package based on el-pagination
-import { fetchImgList, deleteAllNews } from '@/api/article' // 引入需要请求的路径
+
+import { fetchPhotoList, updatePhotoSindex, deletePhotosByPid } from '@/api/newsphotos' // 引入需要请求的路径
 
 import { Message } from 'element-ui'
 import userPhoto from '@/assets/default_images/default.jpg' // 设置加载失败后的默认图片
@@ -90,7 +91,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchImgList(this.listQuery).then(response => {
+      fetchPhotoList(this.listQuery).then(response => {
         this.list = response.data.items
         this.total = response.data.total
         this.listLoading = false
@@ -106,6 +107,17 @@ export default {
       this.multipleSelection = val
     },
 
+    handleModifyIndex(row) {
+      const params = { pid: row.pid, sindex: row.sindex }
+      updatePhotoSindex(params).then(() => {
+        this.$message({
+          message: '操作成功!',
+          type: 'success'
+        })
+        this.getList()
+      })
+    },
+
     deleteSelectionAll() {
       const length = this.multipleSelection.length
       if (length <= 0) {
@@ -117,15 +129,14 @@ export default {
         return false
       }
 
-      const nids = this.multipleSelection.map(item => item.nid).join() // 获取所有选中行的id组成的字符串，以逗号分隔
-      this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
+      const pids = this.multipleSelection.map(item => item.pid).join() // 获取所有选中行的id组成的字符串，以逗号分隔
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        console.log(nids)
-
-        deleteAllNews({ nids: nids }).then(response => {
+        console.log(pids)
+        deletePhotosByPid({ pids: pids }).then(response => {
           if (response.flag === 1) {
             Message({
               message: '删除成功!',
@@ -152,6 +163,7 @@ export default {
         })
       })
     }
+
   }
 }
 </script>

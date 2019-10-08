@@ -5,7 +5,7 @@
 <script>
 
 import MutilImageUpload from './components/MutilImageUpload'
-import { savePhotosList } from '@/api/article'
+import { savePhotosList } from '@/api/newsphotos'  // 保存图片到指定新闻类别下
 
 export default {
   name: 'NewsImageUpload',
@@ -31,9 +31,7 @@ export default {
         tempData.extName = dataList[objKeyArr[i]].extName
         photoList.push(tempData)
       }
-      debugger
-      console.log(' ---> ' + photoList)
-      console.log(' ---> ' + JSON.stringify(photoList))
+
       savePhotosList({ nid: this.nid, photoList: photoList }).then(res => {
         // 上传成功调用图片列表也方法刷新列表页面
         this.$emit('successUploadCBK')
