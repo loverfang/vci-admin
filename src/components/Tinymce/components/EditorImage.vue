@@ -1,6 +1,6 @@
 <template>
   <div class="upload-container">
-    <el-button :style="{background:color,borderColor:color}" icon="el-icon-upload" size="mini" type="primary" @click=" dialogVisible=true">
+    <el-button :style="{background:color,borderColor:color}" icon="el-icon-upload" size="mini" type="primary" @click="dialogVisible=true">
       上传图片
     </el-button>
     <el-dialog :visible.sync="dialogVisible">
@@ -12,7 +12,7 @@
         :on-success="handleSuccess"
         :before-upload="beforeUpload"
         class="editor-slide-upload"
-        action="https://httpbin.org/post"
+        action="api/manage/uploadEditorImage"
         list-type="picture-card"
       >
         <el-button size="small" type="primary">
@@ -69,7 +69,10 @@ export default {
       const objKeyArr = Object.keys(this.listObj)
       for (let i = 0, len = objKeyArr.length; i < len; i++) {
         if (this.listObj[objKeyArr[i]].uid === uid) {
-          this.listObj[objKeyArr[i]].url = response.files.file
+          // 原始文件信息
+          // this.listObj[objKeyArr[i]].url = response.files.file
+          // 上传到服务器以后的路径信息
+          this.listObj[objKeyArr[i]].url = response.data.serverPath
           this.listObj[objKeyArr[i]].hasSuccess = true
           return
         }

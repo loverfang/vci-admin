@@ -7,14 +7,14 @@ const newsRouter = {
   name: 'News',
   redirect: '/news/insights',
   component: Layout,
-  meta: { title: '新闻发布系统', icon: 'example' },
+  meta: { title: '新闻发布系统', icon: 'table' },
   children: [
     {
       path: 'insights',
       redirect: '/news/insights/list',
       name: 'Insights',
       component: () => import('@/views/news/index'),
-      meta: { title: 'VCI Insights', icon: 'example' },
+      meta: { title: 'VCI Insights', icon: 'list' },
       children: [
         {
           path: 'create',
@@ -31,10 +31,24 @@ const newsRouter = {
           hidden: true
         },
         {
+          path: 'imglist/:id(\\d+)',
+          component: () => import('@/views/news/insights/ImageList'),
+          name: 'InsightsImgList',
+          meta: { title: 'Insights ImgList' },
+          hidden: true
+        },
+        {
+          path: 'pdflist/:id(\\d+)',
+          component: () => import('@/views/news/insights/pdflist'),
+          name: 'InsightsPdfList',
+          meta: { title: 'Insights PdfList' },
+          hidden: true
+        },
+        {
           path: 'list',
           component: () => import('@/views/news/insights/index'),
           name: 'InsightsList',
-          meta: { title: 'Insights 数据列表', icon: 'example', activeMenu: '/news/insights' }
+          meta: { title: 'Insights 数据列表', icon: 'table' }
         }
       ]
     }

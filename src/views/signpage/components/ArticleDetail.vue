@@ -9,23 +9,35 @@
           存为草稿
         </el-button>
       </sticky>
-
       <div class="createPost-main-container">
-        <el-form-item style="margin-bottom: 40px;" label-width="120px" label="页面标题:">
-          <el-input v-model="postForm.ptitle" :rows="1" type="input" class="article-input" autosize placeholder="请输入页面标题" />
-          <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}words</span>
-        </el-form-item>
-        <el-form-item style="margin-bottom: 40px;" label-width="120px" label="关键词:">
-          <el-input v-model="postForm.pkeywords" :rows="1" type="input" class="article-input" autosize placeholder="请输入页面关键词" />
-          <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}words</span>
-        </el-form-item>
-        <el-form-item style="margin-bottom: 40px;" label-width="120px" label="页面描述:">
-          <el-input v-model="postForm.pdescription" :rows="10" type="textarea" class="article-textarea" autosize placeholder="请输入页面描述内容" />
-          <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}words</span>
-        </el-form-item>
-        <el-form-item prop="content" style="margin-bottom: 30px;">
-          <Tinymce ref="editor" v-model="postForm.content" :height="400" />
-        </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item style="margin-bottom: 40px;" label-width="120px" label="页面标题:">
+              <el-input v-model="postForm.ptitle" :rows="1" type="input" class="article-input" autosize placeholder="请输入页面标题" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item style="margin-bottom: 40px;" label-width="120px" label="关键词:">
+              <el-input v-model="postForm.pkeywords" :rows="1" type="input" class="article-input" autosize placeholder="请输入页面关键词" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="20">
+            <el-form-item style="margin-bottom: 40px;" label-width="120px" label="页面描述:">
+              <el-input v-model="postForm.pdescription" :rows="10" type="textarea" class="article-textarea" autosize placeholder="请输入页面描述内容" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item style="margin-bottom: 30px;" label-width="120px" prop="content">
+              <Tinymce ref="editor" v-model="postForm.content" :height="400" />
+            </el-form-item>
+          </el-col>
+        </el-row>
       </div>
     </el-form>
   </div>
@@ -35,7 +47,8 @@
 import Tinymce from '@/components/Tinymce'
 import Sticky from '@/components/Sticky' // 粘性header组件
 
-import { fetchSingleArticle, updateArticle } from '@/api/article'
+import { fetchSingleArticle, updateSignleArticle } from '@/api/article'
+
 const defaultForm = {
   status: 'draft',
   ptitle: '', // 文章题目
@@ -48,11 +61,7 @@ const defaultForm = {
 export default {
   name: 'SignleArticleDetail',
   components: { Tinymce, Sticky },
-  props: {
-    signType: {
-      default: ''
-    }
-  },
+  props: { signType: { default: '' }},
   data() {
     const validateRequire = (rule, value, callback) => {
       if (value === '') {
@@ -74,11 +83,7 @@ export default {
       }
     }
   },
-  computed: {
-    contentShortLength() {
-      return this.postForm.ptitle.length
-    }
-  },
+  computed: {},
   created() {
     if (this.signType) {
       this.fetchData(this.signType)
@@ -101,7 +106,7 @@ export default {
         if (valid) {
           this.loading = true
           const tempData = Object.assign({}, this.postForm)
-          updateArticle(tempData).then(() => {
+          updateSignleArticle(tempData).then(() => {
             this.$notify({
               title: '成功',
               message: '发布文章成功',
@@ -115,6 +120,9 @@ export default {
           return false
         }
       })
+    },
+    draftForm() {
+      console.log('Save Draft!')
     }
   }
 }

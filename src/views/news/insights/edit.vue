@@ -1,12 +1,12 @@
 <template>
-  <div>10000</div>
+  <insights-form :is-edit="true" />
 </template>
 
 <script>
-// import InsghtsDetail from '../components/InsightsDetail'
-//
-// export default {
-//   name: 'AddInsights',
-//   components: { InsghtsDetail }
-// }
+import InsightsForm from './components/NewsDetail'
+
+export default {
+  name: 'EditInsghts',
+  components: { InsightsForm }
+}
 </script>

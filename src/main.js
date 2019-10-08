@@ -18,8 +18,11 @@ import router from './router'
 
 import * as filters from './filters' // global filters
 
+import onlyNumber from '@/directive/el-input' // 添加此行=>自定义全局指令
+
 // 设置使用ElementUI并设置语言为英文EN
 Vue.use(ElementUI)
+Vue.use(onlyNumber) // 添加此行=>使用该全局指令
 
 // 注册全局公用的Filters,比如期格式化等一些功能方法都可以卸载filters中进行全局注册
 Object.keys(filters).forEach(key => {

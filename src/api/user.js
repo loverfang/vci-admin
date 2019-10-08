@@ -22,3 +22,11 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function resetPwd(data) {
+  return request({
+    url: 'manage/resetpwd',
+    method: 'post',
+    data
+  })
+}

@@ -7,6 +7,8 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 import newsRouter from './modules/newsRouter'
+import ventorRouter from './modules/ventorRouter'
+
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -61,7 +63,7 @@ export const constantRoutes = [
         path: 'banner',
         name: 'Banner',
         component: () => import('@/views/banner/index'),
-        meta: { title: '首页Banner', icon: 'table' }
+        meta: { title: '首页Banner', icon: 'link' }
       }
     ]
   },
@@ -69,13 +71,13 @@ export const constantRoutes = [
     path: '/single',
     component: Layout,
     name: 'Single',
-    meta: { title: '单页发布系统', icon: 'example' },
+    meta: { title: '单页发布系统', icon: 'form' },
     children: [
       {
         path: 'aboutus',
         name: 'Aboutus',
         component: () => import('@/views/signpage/index'),
-        meta: { title: 'About Us', icon: 'table' },
+        meta: { title: 'About Us', icon: 'form' },
         props: {
           signType: 'aboutus'
         }
@@ -84,7 +86,7 @@ export const constantRoutes = [
         path: 'services',
         name: 'Services',
         component: () => import('@/views/signpage/index'),
-        meta: { title: 'Our Services', icon: 'table' },
+        meta: { title: 'Our Services', icon: 'form' },
         props: {
           signType: 'ourservices'
         }
@@ -93,16 +95,16 @@ export const constantRoutes = [
         path: 'clients',
         name: 'Clients',
         component: () => import('@/views/signpage/index'),
-        meta: { title: 'Our Clients', icon: 'table' },
+        meta: { title: 'Our Clients', icon: 'form' },
         props: {
-          signType: 'Our Clients'
+          signType: 'ourcilents'
         }
       },
       {
         path: 'marketing',
         name: 'Marketing',
         component: () => import('@/views/signpage/index'),
-        meta: { title: 'Marketing With Us', icon: 'table' },
+        meta: { title: 'Marketing With Us', icon: 'form' },
         props: {
           signType: 'marketingwithus'
         }
@@ -111,35 +113,36 @@ export const constantRoutes = [
         path: 'contact',
         name: 'Contact',
         component: () => import('@/views/signpage/index'),
-        meta: { title: 'Contact Us', icon: 'table' },
+        meta: { title: 'Contact Us', icon: 'form' },
         props: {
-          signType: '111'
+          signType: 'contactus'
         }
       }
     ]
   },
   newsRouter, // 新闻中心路由
-  {
-    path: '/category',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'category',
-    meta: { title: '供应商管理', icon: 'example' },
-    children: [
-      {
-        path: 'category',
-        name: 'Category',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Category管理', icon: 'table' }
-      },
-      {
-        path: 'vender',
-        name: 'Vender',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Vender 管理', icon: 'table' }
-      }
-    ]
-  },
+  ventorRouter, // 供应商管理路由
+  // {
+  //   path: '/category',
+  //   component: Layout,
+  //   redirect: '/example/table',
+  //   name: 'category',
+  //   meta: { title: '供应商管理', icon: 'example' },
+  //   children: [
+  //     {
+  //       path: 'category',
+  //       name: 'Category',
+  //       component: () => import('@/views/category/index'),
+  //       meta: { title: 'Category管理', icon: 'table' }
+  //     },
+  //     {
+  //       path: 'vender',
+  //       name: 'Vender',
+  //       component: () => import('@/views/vendor/index'),
+  //       meta: { title: 'Vender 管理', icon: 'table' }
+  //     }
+  //   ]
+  // },
   {
     path: '/videos',
     component: Layout,
@@ -147,8 +150,8 @@ export const constantRoutes = [
       {
         path: 'videos',
         name: 'Videos',
-        component: () => import('@/views/form/index'),
-        meta: { title: '视频信息管理', icon: 'form' }
+        component: () => import('@/views/videos/index'),
+        meta: { title: '视频信息管理', icon: 'eye-open' }
       }
     ]
   },
@@ -160,7 +163,7 @@ export const constantRoutes = [
         path: 'members',
         name: 'Members',
         component: () => import('@/views/member/list'),
-        meta: { title: '会员信息', icon: 'form' }
+        meta: { title: '会员信息', icon: 'user' }
       }
     ]
   },
@@ -192,7 +195,7 @@ export const constantRoutes = [
       {
         path: 'password',
         name: 'Password',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/system/password'),
         meta: { title: '修改密码', icon: 'table' }
       }
     ]

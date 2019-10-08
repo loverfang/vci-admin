@@ -1,19 +1,14 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.title" placeholder="Insights Title" style="width: 280px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-button class="filter-item" type="info" icon="el-icon-search" @click="handleFilter">
-        搜索
-      </el-button>
-      <router-link :to="{path:'/news/insights/create'}">
-        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit">
-          添加
+      <NewsImageUpload ref="imageUpload" :nid="listQuery.nid" @successUploadCBK="getList"/>
+      <div class="editor-upload-btn">
+        <el-button style="margin-left: 10px;" type="warning" icon="el-icon-delete" @click="deleteSelectionAll">
+          删除选择行
         </el-button>
-      </router-link>
-      <el-button class="filter-item" style="margin-left: 10px;" type="warning" icon="el-icon-delete" @click="deleteSelectionAll">
-        删除选择行
-      </el-button>
+      </div>
     </div>
+
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%" @selection-change="handleSelectionChange">>
       <el-table-column
         type="selection"
@@ -23,53 +18,29 @@
       <el-table-column align="center" label="封面" min-width="10%">
         <!-- 图片的显示 -->
         <template slot-scope="scope">
-          <img :src="scope.row.coverImg" min-width="70" height="40" :onerror="errorUserPhoto">
+          <img :src="scope.row.imgPath" min-width="70" height="40" :onerror="errorUserPhoto">
         </template>
       </el-table-column>
-      <el-table-column align="left" label="标题" min-width="25%" :show-overflow-tooltip="true">
+      <el-table-column align="left" label="图片名称" min-width="25%" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <span>{{ scope.row.title }}</span>
+          <span>{{ scope.row.ptitle }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="作者" min-width="10%" :show-overflow-tooltip="true">
+
+      <el-table-column align="center" label="大小" min-width="10%" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
+          <span>{{ scope.row.psize }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="排序索引" min-width="8%">
         <template slot-scope="{row}">
-          <el-input v-model="row.sindex" size="small" class="sindex-input" @blur="handleModifyIndex(row)"/>
+          <el-input v-model="row.sindex" size="small" class="sindex-input" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="浏览次数" min-width="10%">
+
+      <el-table-column align="center" label="上传时间" min-width="10%">
         <template slot-scope="scope">
-          <span>{{ scope.row.viewcount }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="发布时间" min-width="10%">
-        <template slot-scope="scope">
-          <span>{{ scope.row.pubtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="操作" min-width="25%">
-        <template slot-scope="scope">
-          <!-- 要在最右边区域切换显示页面就用router-link标签 -->
-          <router-link :to="'/news/insights/edit/' + scope.row.nid">
-            <el-button type="primary" size="small" icon="el-icon-edit">
-              编辑
-            </el-button>
-          </router-link>
-          <router-link :to="'/news/insights/imglist/' + scope.row.nid">
-          <el-button type=" " size="small" class="el-icon-picture">
-            图片管理
-          </el-button>
-          </router-link>
-          <router-link :to="'/news/insights/pdflist/' + scope.row.nid">
-          <el-button type=" " size="small">
-            <svg-icon icon-class="pdf" />
-            PDF文件管理
-          </el-button>
-          </router-link>
+          <span>{{ scope.row.uptime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -81,14 +52,15 @@
 
 <script>
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
-import { fetchList, updateNewsSindex, deleteAllNews } from '@/api/article' // 引入需要请求的路径
+import NewsImageUpload from '@/components/ImageUpload' // Secondary package based on el-pagination
+import { fetchImgList, deleteAllNews } from '@/api/article' // 引入需要请求的路径
 
 import { Message } from 'element-ui'
-
 import userPhoto from '@/assets/default_images/default.jpg' // 设置加载失败后的默认图片
+
 export default {
-  name: 'InsightsList',
-  components: { Pagination },
+  name: 'InsightsImgList',
+  components: { Pagination, NewsImageUpload },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -104,8 +76,7 @@ export default {
       total: 0,
       listLoading: true,
       listQuery: {
-        title: null,
-        ntype: 'insights',
+        nid: this.$route.params.id,
         page: 1,
         limit: 10
       },
@@ -119,7 +90,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
+      fetchImgList(this.listQuery).then(response => {
         this.list = response.data.items
         this.total = response.data.total
         this.listLoading = false
@@ -128,17 +99,6 @@ export default {
     handleFilter() {
       this.listQuery.page = 1
       this.getList()
-    },
-
-    handleModifyIndex(row) {
-      const params = { nid: row.nid, sindex: row.sindex }
-      updateNewsSindex(params).then(() => {
-        this.$message({
-          message: '操作成功!',
-          type: 'success'
-        })
-        this.getList()
-      })
     },
 
     // 操作多选
@@ -201,9 +161,7 @@ export default {
     width: 50%;
     text-align: center;
   }
-  .cancel-btn {
-    position: absolute;
-    right: 15px;
-    top: 10px;
+  .editor-upload-btn {
+    display: inline-block;
   }
 </style>

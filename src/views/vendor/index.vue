@@ -3,7 +3,7 @@
 </template>
 <script>
 export default {
-  name: 'ArticleMain',
+  name: 'VendorMain',
   data() {
     return { }
   }

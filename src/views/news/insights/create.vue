@@ -1,15 +1,12 @@
 <template>
-  <insghts-detail-form />
+  <insights-form :is-edit="false" />
 </template>
 
 <script>
-import InsghtsDetailForm from './components/InsightsDetail'
+import InsightsForm from './components/NewsDetail'
 
 export default {
-  name: 'CreateInsghtsForm',
-  components: { InsghtsDetailForm },
-  data() {
-    return { }
-  }
+  name: 'CreateInsghts',
+  components: { InsightsForm }
 }
 </script>

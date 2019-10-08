@@ -1,11 +1,11 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.adtitle" placeholder="Banner名称" style="width: 280px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.title" placeholder="视频名称" style="width: 280px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-button class="filter-item" type="info" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit"  @click="handleCreate">
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="warning" icon="el-icon-delete" @click="deleteSelectionAll">
@@ -21,42 +21,28 @@
       />
       <el-table-column align="center" label="预览" min-width="10%">
         <template slot-scope="scope">
-          <img :src="scope.row.coverImg" min-width="70" height="40" :onerror="errorUserPhoto" v-if="scope.row.coverImg !== null">
-          <img :src="userPhoto" min-width="70" height="40" v-if="scope.row.coverImg === null">
+          <img v-if="scope.row.coverImg !== null" :src="scope.row.coverImg" min-width="70" height="40" :onerror="errorUserPhoto">
+          <img v-if="scope.row.coverImg === null" :src="userPhoto" min-width="70" height="40">
         </template>
       </el-table-column>
-      <el-table-column align="left" label="Banner标题" min-width="20%" :show-overflow-tooltip="true">
+      <el-table-column align="left" label="视频标题" min-width="20%" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <span>{{ scope.row.adtitle }}</span>
+          <span>{{ scope.row.title }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="left" label="Banner链接" min-width="35%" :show-overflow-tooltip="true">
+      <el-table-column align="left" label="播放链接" min-width="35%" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <span>{{ scope.row.adurl }}</span>
+          <span>{{ scope.row.vurl }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="所需场次数" min-width="10%" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          <span>{{ scope.row.needcount }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="排序索引" min-width="10%">
         <template slot-scope="{row}">
-          <el-input v-model="row.sindex" size="small" class="sindex-input"  @blur="handleModifyIndex(row)"/>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="状态" min-width="10%" :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          <div v-if="scope.row.status === 'NORMAL'">
-            <el-tag :type="scope.row.status | statusFilter">
-              正常
-            </el-tag>
-          </div>
-          <div v-else-if="scope.row.status === 'WAITCHECK'">
-            <el-tag :type="scope.row.status | statusFilter">
-              待审核
-            </el-tag>
-          </div>
-          <div v-else>
-            <el-tag :type="scope.row.status | statusFilter">
-              已删除
-            </el-tag>
-          </div>
+          <el-input v-model="row.sindex" size="small" class="sindex-input" @blur="handleModifyIndex(row)" />
         </template>
       </el-table-column>
       <el-table-column align="center" label="发布时间" min-width="10%">
@@ -64,15 +50,9 @@
           <span>{{ scope.row.addtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" min-width="20%">
+      <el-table-column align="center" label="操作" min-width="10%">
         <template slot-scope="{row}">
-        <el-button type="primary" size="small" icon="el-icon-edit" @click="handleUpdate(row)">编辑</el-button>
-        <el-button v-if="row.status!=='NORMAL'" size="mini" type="success" @click="handleModifyStatus(row,'NORMAL')">
-          恢复
-        </el-button>
-        <el-button v-if="row.status!=='LOCKED'" size="mini" type="danger" @click="handleModifyStatus(row,'LOCKED')">
-          锁定
-        </el-button>
+          <el-button type="primary" size="small" icon="el-icon-edit" @click="handleUpdate(row)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -81,36 +61,51 @@
     </div>
 
     <!-- 添加编辑弹出框 -->
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" top="12vh">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" top="5vh">
       <el-form ref="dataForm" :rules="rules" :model="postForm" label-position="left" label-width="120px" min-width="98%">
         <el-row :gutter="10" height="30px;">
-          <el-col :span="12">
-            <el-form-item label="Banner名称" prop="name">
-              <el-input v-model="postForm.adtitle" />
+          <el-col :span="15">
+            <el-form-item label="视频名称" prop="title">
+              <el-input v-model="postForm.title" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10" height="30px;">
-          <el-col :span="12">
-            <el-form-item label="Banner地址" prop="name">
-              <el-input v-model="postForm.adurl" />
+          <el-col :span="15">
+            <el-form-item label="播放地址" prop="vurl">
+              <el-input v-model="postForm.vurl" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10" height="30px;">
+          <el-col :span="15">
+            <el-form-item label="所需次数" prop="needcount">
+              <el-input v-model="postForm.needcount"  v-only-number="{max:10000,min:0,precision:0}"/>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
-          <el-col :span="12">
-            <el-form-item label="Banner图片">
+          <el-col :span="15">
+            <el-form-item label="视频封面图">
               <el-upload
                 class="cover-uploader"
                 action="api/manage/uploadImage"
                 :show-file-list="false"
                 list-type="picture"
                 :on-success="coverHandleSuccess"
-                :before-upload="coverBeforeUpload">
+                :before-upload="coverBeforeUpload"
+              >
                 <div slot="tip" class="el-upload__tip">上传成功后,点击图片重新上传</div>
                 <img v-if="postForm.coverImg" :src="postForm.coverImg" class="avatar">
-                <i v-else class="el-icon-plus cover-uploader-icon"></i>
+                <i v-else class="el-icon-plus cover-uploader-icon" />
               </el-upload>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10" height="30px;">
+          <el-col :span="24">
+            <el-form-item label="视频简介" prop="memo">
+              <Tinymce ref="editor" v-model="postForm.memo" :height="120"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -129,22 +124,25 @@
 </template>
 
 <script>
+import Tinymce from '@/components/Tinymce'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
-import { fetchList, saveAdvertise, updateAdvertise, updateAdvertiseSindex, updateAdvertiseStatus, deleteAdvertise } from '@/api/banner' // 引入需要请求的路径
+import { fetchList, saveVideo, updateVideo, updateVideoSindex, deleteVideo } from '@/api/videos' // 引入需要请求的路径
 
 import { Message } from 'element-ui'
 import userPhoto from '@/assets/default_images/default.jpg' // 设置加载失败后的默认图片
 
 const defaultForm = {
-  adid: undefined,
-  adtitle: '',
-  adurl: '',
+  vid: undefined,
+  title: '',
+  vurl: '',
+  needcount: '1',
+  memo: '',
   coverImg: ''
 }
 
 export default {
   name: 'VendorPdfList',
-  components: { Pagination },
+  components: { Pagination, Tinymce },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -224,7 +222,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          saveAdvertise(this.postForm).then(() => {
+          saveVideo(this.postForm).then(() => {
             this.getList()
             this.dialogFormVisible = false
             this.$message({
@@ -250,7 +248,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.postForm)
-          updateAdvertise(tempData).then(() => {
+          updateVideo(tempData).then(() => {
             this.getList()
             this.dialogFormVisible = false
             this.$message({
@@ -263,19 +261,8 @@ export default {
     },
 
     handleModifyIndex(row) {
-      const params = { adid: row.adid, sindex: row.sindex }
-      updateAdvertiseSindex(params).then(() => {
-        this.$message({
-          message: '操作成功!',
-          type: 'success'
-        })
-        this.getList()
-      })
-    },
-
-    handleModifyStatus(row, status) {
-      const params = { adid: row.adid, status: status }
-      updateAdvertiseStatus(params).then(() => {
+      const params = { vid: row.vid, sindex: row.sindex }
+      updateVideoSindex(params).then(() => {
         this.$message({
           message: '操作成功!',
           type: 'success'
@@ -294,14 +281,14 @@ export default {
         })
         return false
       }
-      const adids = this.multipleSelection.map(item => item.adid).join() // 获取所有选中行的id组成的字符串，以逗号分隔
+      const vids = this.multipleSelection.map(item => item.vid).join() // 获取所有选中行的id组成的字符串，以逗号分隔
       this.$confirm('此操作将永久删除选中记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        console.log(adids)
-        deleteAdvertise({ adids: adids }).then(response => {
+        console.log(vids)
+        deleteVideo({ vids: vids }).then(response => {
           if (response.flag === 1) {
             Message({
               message: '删除成功!',
@@ -331,9 +318,11 @@ export default {
 
     resetTemp() {
       this.defaultForm = {
-        adid: undefined,
-        adtitle: '',
-        adurl: '',
+        vid: undefined,
+        title: '',
+        vurl: '',
+        needcount: '1',
+        memo: '',
         coverImg: ''
       }
     },
@@ -360,9 +349,21 @@ export default {
 </script>
 
 <style scoped>
-  .sindex-input >>> input{
-    width: 50%;
-    text-align: center;
+   .sindex-input >>> input{
+     width: 50%;
+     text-align: center;
+   }
+
+   .el-form >>> .el-form-item label:after {
+     content: " ";
+     display: inline-block;
+     width: 100%;
+   }
+
+  .el-form >>> .el-form-item__label {
+    text-align:justify;
+    text-align:right;
+    height: 40px;
   }
 
   .cover-uploader >>> .el-upload {
