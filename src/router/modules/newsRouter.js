@@ -48,10 +48,10 @@ const newsRouter = {
           path: 'list',
           component: () => import('@/views/news/insights/index'),
           name: 'InsightsList',
-          meta: { title: 'VCI Insights 管理', icon: 'list' }
+          meta: { title: 'VCI Insights管理', icon: 'list' }
         }
       ]
-    }
+    },
     // ,
     // {
     //   path: 'events',
@@ -111,8 +111,51 @@ const newsRouter = {
     //     }
     //   ]
     // },
+    {
+      path: 'stories',
+      redirect: '/news/stories/list',
+      name: 'Stories',
+      component: () => import('@/views/news/index'),
+      meta: { title: 'Success Stories', icon: 'list' },
+      children: [
+        {
+          path: 'create',
+          component: () => import('@/views/news/stories/create'),
+          name: 'CreateStories',
+          meta: { title: 'Create Stories', icon: 'example' },
+          hidden: true
+        },
+        {
+          path: 'edit/:id(\\d+)',
+          component: () => import('@/views/news/stories/edit'),
+          name: 'EditStories',
+          meta: { title: 'Edit Stories' },
+          hidden: true
+        },
+        {
+          path: 'imglist/:id(\\d+)',
+          component: () => import('@/views/news/stories/imglist'),
+          name: 'StoriesImgList',
+          meta: { title: 'Stories 图片管理' },
+          hidden: true
+        },
+        {
+          path: 'pdflist/:id(\\d+)',
+          component: () => import('@/views/news/stories/pdflist'),
+          name: 'StoriesPdfList',
+          meta: { title: 'Stories PDF文件管理' },
+          hidden: true
+        },
+        {
+          path: 'list',
+          component: () => import('@/views/news/stories/index'),
+          name: 'InsightsList',
+          meta: { title: 'Success Stories管理', icon: 'list' }
+        }
+      ]
+    }
     // {
-    //   path: 'stories',
+    //   path: '',
     //   redirect: '/news/stories/list',
     //   name: 'Stories',
     //   component: () => import('@/views/news/index'),
@@ -136,7 +179,7 @@ const newsRouter = {
     //       path: 'list',
     //       component: () => import('@/views/news/stories/index'),
     //       name: 'StoriesList',
-    //       meta: { title: 'Success Stories', icon: 'list' }
+    //       meta: { title: '', icon: 'list' }
     //     }
     //   ]
     // }
