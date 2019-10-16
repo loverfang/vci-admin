@@ -31,11 +31,6 @@
           <span>{{ scope.row.title }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="作者" min-width="10%" :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
-        </template>
-      </el-table-column>
       <el-table-column align="center" label="排序索引" min-width="8%">
         <template slot-scope="{row}">
           <el-input v-model="row.sindex" size="small" class="sindex-input" @blur="handleModifyIndex(row)"/>
@@ -105,7 +100,7 @@ export default {
       listLoading: true,
       listQuery: {
         title: null,
-        ntype: 'insights',
+        ntype: 'stories',
         page: 1,
         limit: 10
       },

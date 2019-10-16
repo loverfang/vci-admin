@@ -1,89 +1,86 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.name" placeholder="会员姓名" style="width: 280px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+      <el-input v-model="listQuery.title" placeholder="Insights Title" style="width: 280px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-button class="filter-item" type="info" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
-      <router-link :to="/news/insghts/create">
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        添加
-      </el-button>
+      <router-link :to="{path:'/news/insights/create'}">
+        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit">
+          添加
+        </el-button>
       </router-link>
+      <el-button class="filter-item" style="margin-left: 10px;" type="warning" icon="el-icon-delete" @click="deleteSelectionAll">
+        删除选择行
+      </el-button>
     </div>
-
-    <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
-      <el-table-column align="center" label="编号" min-width="5%">
+    <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%" @selection-change="handleSelectionChange">>
+      <el-table-column
+        type="selection"
+        width="50"
+        align="center"
+      />
+      <el-table-column align="center" label="封面" min-width="10%">
+        <!-- 图片的显示 -->
         <template slot-scope="scope">
-          <span>{{ scope.row.memid }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="left" label="用户名" min-width="20%" :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          <span>{{ scope.row.username }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="left" label="姓名" min-width="15%" :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
+          <img :src="scope.row.coverImg" min-width="70" height="40" :onerror="errorUserPhoto">
         </template>
       </el-table-column>
 
-      <el-table-column class-name="status-col" label="状态" min-width="8%" align="center">
-
+      <el-table-column align="center" label="顶部图片" min-width="10%" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <div v-if="scope.row.status === 'NORMAL'">
-            <el-tag :type="scope.row.status | statusFilter">
-              正常
-            </el-tag>
-          </div>
-          <div v-else-if="scope.row.status === 'WAITCHECK'">
-            <el-tag :type="scope.row.status | statusFilter">
-              待审核
-            </el-tag>
-          </div>
-          <div v-else>
-            <el-tag :type="scope.row.status | statusFilter">
-              已删除
-            </el-tag>
-          </div>
+          <img :src="scope.row.coverImg" min-width="70" height="40" :onerror="errorUserPhoto">
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="电话" min-width="12%">
+      <el-table-column align="left" label="标题" min-width="25%" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <span>{{ scope.row.phone }}</span>
+          <span>{{ scope.row.title }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="邮箱" min-width="20%" :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          <span>{{ scope.row.email }}</span>
+
+      <el-table-column align="center" label="排序索引" min-width="8%">
+        <template slot-scope="{row}">
+          <el-input v-model="row.sindex" size="small" class="sindex-input" @blur="handleModifyIndex(row)"/>
         </template>
       </el-table-column>
-      <el-table-column label="任职公司" min-width="25%">
+      <el-table-column align="center" label="浏览次数" min-width="10%">
         <template slot-scope="scope">
-          <span>{{ scope.row.company }}</span>
+          <span>{{ scope.row.viewcount }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="工作职位" min-width="20%" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="发布时间" min-width="10%">
         <template slot-scope="scope">
-          <span>{{ scope.row.jobtitle }}</span>
+          <span>{{ scope.row.pubtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="视频场次(剩余)" min-width="8%" align="center">
+      <el-table-column align="center" label="操作" min-width="35%">
         <template slot-scope="scope">
-          {{ scope.row.avldays }}次
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="操作" min-width="30%">
-        <template slot-scope="scope">
-          <router-link :to="'/example/edit/'+scope.row.id">
+          <!-- 要在最右边区域切换显示页面就用router-link标签 -->
+          <router-link :to="'/news/insights/edit/' + scope.row.nid">
             <el-button type="primary" size="small" icon="el-icon-edit">
               编辑
             </el-button>
-            <el-button type=" " size="small" icon="el-icon-delete">
-              删除
+          </router-link>
+          <router-link :to="'/news/insights/edit/' + scope.row.nid">
+            <el-button type="primary" size="small" icon="el-icon-edit">
+              顶部图片
+            </el-button>
+          </router-link>
+          <router-link :to="'/news/insights/imglist/' + scope.row.nid">
+          <el-button type="success" size="small" class="el-icon-picture">
+            图片管理
+          </el-button>
+          </router-link>
+          <router-link :to="'/news/insights/pdflist/' + scope.row.nid">
+          <el-button type="danger" size="small">
+            <svg-icon icon-class="pdf" />
+            PDF管理
+          </el-button>
+          </router-link>
+          <router-link :to="'/news/insights/edit/' + scope.row.nid">
+            <el-button type="primary" size="small" icon="el-icon-edit">
+              广告管理
             </el-button>
           </router-link>
         </template>
@@ -97,10 +94,13 @@
 
 <script>
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
-import { fetchList } from '@/api/member' // 引入需要请求的路径
+import { fetchList, updateNewsSindex, deleteAllNews } from '@/api/article' // 引入需要请求的路径
 
+import { Message } from 'element-ui'
+
+import userPhoto from '@/assets/default_images/default.jpg' // 设置加载失败后的默认图片
 export default {
-  name: 'MemberList',
+  name: 'InsightsList',
   components: { Pagination },
   filters: {
     statusFilter(status) {
@@ -117,10 +117,13 @@ export default {
       total: 0,
       listLoading: true,
       listQuery: {
-        name: null,
+        title: null,
+        ntype: 'events',
         page: 1,
         limit: 10
-      }
+      },
+      errorUserPhoto: 'this.src="' + userPhoto + '"',
+      multipleSelection: [] // 存放选中的数据
     }
   },
   created() {
@@ -139,16 +142,77 @@ export default {
       this.listQuery.page = 1
       this.getList()
     },
-    handleCreate() {
-      alert(2)
+
+    handleModifyIndex(row) {
+      const params = { nid: row.nid, sindex: row.sindex }
+      updateNewsSindex(params).then(() => {
+        this.$message({
+          message: '操作成功!',
+          type: 'success'
+        })
+        this.getList()
+      })
+    },
+
+    // 操作多选
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
+
+    deleteSelectionAll() {
+      const length = this.multipleSelection.length
+      if (length <= 0) {
+        Message({
+          message: '请选中需要删除的记录',
+          type: 'error',
+          duration: 5 * 1000
+        })
+        return false
+      }
+
+      const nids = this.multipleSelection.map(item => item.nid).join() // 获取所有选中行的id组成的字符串，以逗号分隔
+      this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        console.log(nids)
+
+        deleteAllNews({ nids: nids }).then(response => {
+          if (response.flag === 1) {
+            Message({
+              message: '删除成功!',
+              type: 'success',
+              duration: 5 * 1000
+            })
+            // 删除后刷新数据
+            this.listQuery.page = 1
+            this.getList()
+          } else {
+            Message({
+              message: '删除失败!',
+              type: 'error',
+              duration: 5 * 1000
+            })
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
   }
 }
 </script>
 
 <style scoped>
-  .edit-input {
-    padding-right: 100px;
+  .sindex-input >>> input{
+    width: 50%;
+    text-align: center;
   }
   .cancel-btn {
     position: absolute;
