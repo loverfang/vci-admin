@@ -25,32 +25,22 @@
         </el-form-item>
         <el-form-item label="所属栏目" prop="ntype">
           <el-select v-model="postForm.ntype">
-            <el-option label="INSIGHTS" value="shanghai" />
+            <el-option label="Partners" value="PARTNERS" />
           </el-select>
         </el-form-item>
-        <el-form-item label="栏目标签/类型">
+
+        <el-form-item label="伙伴名称" prop="title">
           <el-col :span="11">
-            <el-input v-model="postForm.nlable" placeholder="栏目标签/类型"/>
+            <el-input v-model="postForm.title" placeholder="伙伴名称"/>
           </el-col>
         </el-form-item>
-        <el-form-item label="文章标题" prop="title">
+
+        <el-form-item label="公司网址">
           <el-col :span="11">
-            <el-input v-model="postForm.title" placeholder="文章标题"/>
+            <el-input v-model="postForm.author" placeholder="公司网址"/>
           </el-col>
         </el-form-item>
-        <el-form-item label="文章摘要">
-          <el-input v-model="postForm.ndigest" type="textarea" :rows="2" placeholder="文章摘要"/>
-        </el-form-item>
-        <el-form-item label="作者">
-          <el-col :span="11">
-            <el-input v-model="postForm.author" placeholder="作者/来源"/>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="英文日期">
-          <el-col :span="11">
-            <el-date-picker v-model="postForm.endate" type="date" placeholder="Pick a date" style="width: 100%;"/>
-          </el-col>
-        </el-form-item>
+
         <el-form-item label="新闻封面">
           <el-upload
             class="avatar-uploader"
@@ -63,19 +53,8 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"/>
           </el-upload>
         </el-form-item>
-        <el-form-item label="作者头像">
-          <el-upload
-            class="avatar-uploader"
-            action="api/manage/uploadImage"
-            :show-file-list="false"
-            :on-success="handleAuthorImgSuccess"
-            :before-upload="beforeAvatarUpload"
-          >
-            <img v-if="postForm.authorImg" :src="postForm.coverImg" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"/>
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="文章内容" prop="content">
+
+        <el-form-item label="伙伴介绍" prop="content">
           <Tinymce ref="editor" v-model="postForm.content" :height="400"/>
         </el-form-item>
       </div>
@@ -87,25 +66,21 @@
 import Tinymce from '@/components/Tinymce'
 import Sticky from '@/components/Sticky' // 粘性header组件
 
-import { fetchNewsDetail, createInsights, updateInsights } from '@/api/article'
+import { fetchNewsDetail, createPartner, updatePartner } from '@/api/article'
 const defaultForm = {
   status: 'draft',
   ptitle: '', // 文章题目
   pkeywords: '', // 页面关键字
   pdescription: '', // 页面描述
-  ntype: 'INSIGHTS', // 文字类型
-  nlable: '', // 类型标签
-  title: '', // 标题
-  author: '', // 作者
-  endate: '', // 英文日期
-  ndigest: '', // 新闻摘要
-  content: '', // 文章内容
-  coverImg: '', // 封面路径
-  authorImg: '' // 作者头像
+
+  ntype: 'PARTNERS', // 文字类型
+  title: '', // 伙伴名称
+  author: '', // 公司网址
+  content: '' // 伙伴介绍
 }
 
 export default {
-  name: 'InsightsForm',
+  name: 'PartnersForm',
   components: { Tinymce, Sticky },
   props: {
     isEdit: { type: Boolean, default: false }
@@ -146,14 +121,13 @@ export default {
   methods: {
     submitForm() {
       this.$refs.postForm.validate(valid => {
-        alert(valid)
         if (valid) {
           this.loading = true
           const tempData = Object.assign({}, this.postForm)
           console.log('请求数据' + tempData)
 
           if (!this.isEdit) { // 不是编辑即添加
-            createInsights(tempData).then(() => {
+            createPartner(tempData).then(() => {
               this.$notify({
                 title: '成功',
                 message: '修改文章成功',
@@ -162,7 +136,7 @@ export default {
               })
             })
           } else {
-            updateInsights(tempData).then(() => {
+            updatePartner(tempData).then(() => {
               this.$notify({
                 title: '成功',
                 message: '发布文章成功',
@@ -184,6 +158,7 @@ export default {
     fetchData(nid) {
       fetchNewsDetail(nid).then(response => {
         // 将查询出来的只放入到表单中
+        debugger
         this.postForm = Object.assign({}, response.data)
         this.loading = false
       }).catch(err => {

@@ -60,7 +60,7 @@ import { Message } from 'element-ui'
 import userPhoto from '@/assets/default_images/default.jpg' // 设置加载失败后的默认图片
 
 export default {
-  name: 'InsightsImgList',
+  name: 'EventsImgList',
   components: { Pagination, NewsImageUpload },
   filters: {
     statusFilter(status) {

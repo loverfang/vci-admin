@@ -1,12 +1,12 @@
 <template>
-  <insights-form :is-edit="true" />
+  <stories-form :is-edit="true" />
 </template>
 
 <script>
-import InsightsForm from './components/NewsDetail'
+import StoriesForm from './components/NewsDetail'
 
 export default {
-  name: 'EditInsghts',
-  components: { InsightsForm }
+  name: 'EditStories',
+  components: { StoriesForm }
 }
 </script>

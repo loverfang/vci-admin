@@ -1,12 +1,12 @@
 <template>
-  <insights-form :is-edit="false" />
+  <partners-form :is-edit="false" />
 </template>
 
 <script>
-import InsightsForm from './components/NewsDetail'
+import PartnersForm from './components/NewsDetail'
 
 export default {
-  name: 'CreateInsghts',
-  components: { InsightsForm }
+  name: 'CreatePartners',
+  components: { PartnersForm }
 }
 </script>

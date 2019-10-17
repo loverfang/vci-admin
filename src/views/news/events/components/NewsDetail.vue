@@ -25,7 +25,7 @@
         </el-form-item>
         <el-form-item label="所属栏目" prop="ntype">
           <el-select v-model="postForm.ntype">
-            <el-option label="INSIGHTS" value="shanghai" />
+            <el-option label="Success Stories" value="STORIES" />
           </el-select>
         </el-form-item>
         <el-form-item label="栏目标签/类型">
@@ -38,9 +38,6 @@
             <el-input v-model="postForm.title" placeholder="文章标题"/>
           </el-col>
         </el-form-item>
-        <el-form-item label="文章摘要">
-          <el-input v-model="postForm.ndigest" type="textarea" :rows="2" placeholder="文章摘要"/>
-        </el-form-item>
         <el-form-item label="作者">
           <el-col :span="11">
             <el-input v-model="postForm.author" placeholder="作者/来源"/>
@@ -48,7 +45,22 @@
         </el-form-item>
         <el-form-item label="英文日期">
           <el-col :span="11">
-            <el-date-picker v-model="postForm.endate" type="date" placeholder="Pick a date" style="width: 100%;"/>
+            <el-input v-model="postForm.endate" placeholder="英文日期" />
+          </el-col>
+        </el-form-item>
+        <el-form-item label="国家">
+          <el-col :span="11">
+            <el-input v-model="postForm.province" placeholder="国家" />
+          </el-col>
+        </el-form-item>
+        <el-form-item label="省/市">
+          <el-col :span="11">
+            <el-input v-model="postForm.city" placeholder="省/市" />
+          </el-col>
+        </el-form-item>
+        <el-form-item label="事件视频">
+          <el-col :span="11">
+            <el-input v-model="postForm.video" placeholder="事件视频地址" />
           </el-col>
         </el-form-item>
         <el-form-item label="新闻封面">
@@ -63,20 +75,30 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"/>
           </el-upload>
         </el-form-item>
-        <el-form-item label="作者头像">
+        <el-form-item label="文章顶部图片">
           <el-upload
             class="avatar-uploader"
             action="api/manage/uploadImage"
             :show-file-list="false"
-            :on-success="handleAuthorImgSuccess"
+            :on-success="handleCoverImgSuccess"
             :before-upload="beforeAvatarUpload"
           >
-            <img v-if="postForm.authorImg" :src="postForm.coverImg" class="avatar">
+            <img v-if="postForm.coverImg" :src="postForm.coverImg" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"/>
           </el-upload>
         </el-form-item>
-        <el-form-item label="文章内容" prop="content">
-          <Tinymce ref="editor" v-model="postForm.content" :height="400"/>
+        <el-form-item label="文章摘要">
+          <Tinymce ref="editor" v-model="postForm.ndigest" :height="100"/>
+        </el-form-item>
+
+        <el-form-item label="Event Highlight" prop="content">
+          <Tinymce ref="editor" v-model="postForm.txt1" :height="300"/>
+        </el-form-item>
+        <el-form-item label="Event Snapshot" prop="content">
+          <Tinymce ref="editor" v-model="postForm.txt2" :height="300"/>
+        </el-form-item>
+        <el-form-item label="Acknowledgement" prop="content">
+          <Tinymce ref="editor" v-model="postForm.txt3" :height="300"/>
         </el-form-item>
       </div>
     </el-form>
@@ -87,25 +109,30 @@
 import Tinymce from '@/components/Tinymce'
 import Sticky from '@/components/Sticky' // 粘性header组件
 
-import { fetchNewsDetail, createInsights, updateInsights } from '@/api/article'
+import { fetchNewsDetail, createStories, updateStories } from '@/api/article'
 const defaultForm = {
+  nid: '',
   status: 'draft',
   ptitle: '', // 文章题目
   pkeywords: '', // 页面关键字
   pdescription: '', // 页面描述
-  ntype: 'INSIGHTS', // 文字类型
+  ntype: 'STORIES', // 文字类型
   nlable: '', // 类型标签
   title: '', // 标题
   author: '', // 作者
   endate: '', // 英文日期
   ndigest: '', // 新闻摘要
-  content: '', // 文章内容
   coverImg: '', // 封面路径
-  authorImg: '' // 作者头像
+  province: 'China',
+  city: 'Shanghai',
+  video: '',
+  txt1: '',
+  txt2: '',
+  txt3: ''
 }
 
 export default {
-  name: 'InsightsForm',
+  name: 'StoriesForm',
   components: { Tinymce, Sticky },
   props: {
     isEdit: { type: Boolean, default: false }
@@ -146,14 +173,13 @@ export default {
   methods: {
     submitForm() {
       this.$refs.postForm.validate(valid => {
-        alert(valid)
         if (valid) {
           this.loading = true
           const tempData = Object.assign({}, this.postForm)
           console.log('请求数据' + tempData)
 
           if (!this.isEdit) { // 不是编辑即添加
-            createInsights(tempData).then(() => {
+            createStories(tempData).then(() => {
               this.$notify({
                 title: '成功',
                 message: '修改文章成功',
@@ -162,7 +188,7 @@ export default {
               })
             })
           } else {
-            updateInsights(tempData).then(() => {
+            updateStories(tempData).then(() => {
               this.$notify({
                 title: '成功',
                 message: '发布文章成功',

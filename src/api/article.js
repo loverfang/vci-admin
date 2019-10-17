@@ -72,3 +72,38 @@ export function updateInsights(data) {
   })
 }
 
+// 新增Partner类型的新闻
+export function createPartner(data) {
+  return request({
+    url: 'manage/createPartner',
+    method: 'post',
+    data
+  })
+}
+
+// 修改Partner类型的新闻
+export function updatePartner(data) {
+  return request({
+    url: 'manage/updatePartner',
+    method: 'post',
+    data
+  })
+}
+
+// 新增Stories类型的新闻
+export function createStories(data) {
+  return request({
+    url: 'manage/createStories',
+    method: 'post',
+    data
+  })
+}
+
+// 修改Stories类型的新闻
+export function updateStories(data) {
+  return request({
+    url: 'manage/updateStories',
+    method: 'post',
+    data
+  })
+}

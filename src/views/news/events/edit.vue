@@ -1,12 +1,12 @@
 <template>
-  <insights-form :is-edit="true" />
+  <events-form :is-edit="true" />
 </template>
 
 <script>
-import InsightsForm from './components/NewsDetail'
+import EventsForm from './components/NewsDetail'
 
 export default {
-  name: 'EditInsghts',
-  components: { InsightsForm }
+  name: 'EditEvents',
+  components: { EventsForm }
 }
 </script>

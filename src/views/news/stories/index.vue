@@ -5,7 +5,7 @@
       <el-button class="filter-item" type="info" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
-      <router-link :to="{path:'/news/insights/create'}">
+      <router-link :to="{path:'/news/stories/create'}">
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit">
           添加
         </el-button>
@@ -49,17 +49,17 @@
       <el-table-column align="center" label="操作" min-width="25%">
         <template slot-scope="scope">
           <!-- 要在最右边区域切换显示页面就用router-link标签 -->
-          <router-link :to="'/news/insights/edit/' + scope.row.nid">
+          <router-link :to="'/news/stories/edit/' + scope.row.nid">
             <el-button type="primary" size="small" icon="el-icon-edit">
               编辑
             </el-button>
           </router-link>
-          <router-link :to="'/news/insights/imglist/' + scope.row.nid">
+          <router-link :to="'/news/stories/imglist/' + scope.row.nid">
           <el-button type="success" size="small" class="el-icon-picture">
             图片管理
           </el-button>
           </router-link>
-          <router-link :to="'/news/insights/pdflist/' + scope.row.nid">
+          <router-link :to="'/news/stories/pdflist/' + scope.row.nid">
           <el-button type="danger" size="small">
             <svg-icon icon-class="pdf" />
             PDF文件管理
@@ -82,7 +82,7 @@ import { Message } from 'element-ui'
 
 import userPhoto from '@/assets/default_images/default.jpg' // 设置加载失败后的默认图片
 export default {
-  name: 'InsightsList',
+  name: 'StoriesList',
   components: { Pagination },
   filters: {
     statusFilter(status) {

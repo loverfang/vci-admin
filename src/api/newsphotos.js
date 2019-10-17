@@ -10,6 +10,7 @@ export function fetchPhotoList(query) {
 }
 
 export function savePhotoList(data) {
+  alert('OK')
   return request({
     url: 'manage/savePhotos',
     method: 'post',

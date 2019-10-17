@@ -5,7 +5,7 @@
 <script>
 
 import MutilImageUpload from './components/MutilImageUpload'
-import { savePhotosList } from '@/api/newsphotos'  // 保存图片到指定新闻类别下
+import { savePhotoList } from '@/api/newsphotos' // 保存图片到指定新闻类别下
 
 export default {
   name: 'NewsImageUpload',
@@ -20,6 +20,7 @@ export default {
   computed: { },
   methods: {
     imageSuccessCBK(dataList) {
+      alert('step2')
       const photoList = []
       // Js的遍历Map对象
       const objKeyArr = Object.keys(dataList)
@@ -32,7 +33,9 @@ export default {
         photoList.push(tempData)
       }
 
-      savePhotosList({ nid: this.nid, photoList: photoList }).then(res => {
+      savePhotoList({ nid: this.nid, photoList: photoList }).then(res => {
+
+        alert('准备保存')
         // 上传成功调用图片列表也方法刷新列表页面
         this.$emit('successUploadCBK')
       }).catch(err => {

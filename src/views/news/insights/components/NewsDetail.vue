@@ -25,7 +25,7 @@
         </el-form-item>
         <el-form-item label="所属栏目" prop="ntype">
           <el-select v-model="postForm.ntype">
-            <el-option label="INSIGHTS" value="shanghai" />
+            <el-option label="VCI Instghts" value="INSIGHTS" />
           </el-select>
         </el-form-item>
         <el-form-item label="栏目标签/类型">
@@ -38,9 +38,6 @@
             <el-input v-model="postForm.title" placeholder="文章标题"/>
           </el-col>
         </el-form-item>
-        <el-form-item label="文章摘要">
-          <el-input v-model="postForm.ndigest" type="textarea" :rows="2" placeholder="文章摘要"/>
-        </el-form-item>
         <el-form-item label="作者">
           <el-col :span="11">
             <el-input v-model="postForm.author" placeholder="作者/来源"/>
@@ -48,7 +45,7 @@
         </el-form-item>
         <el-form-item label="英文日期">
           <el-col :span="11">
-            <el-date-picker v-model="postForm.endate" type="date" placeholder="Pick a date" style="width: 100%;"/>
+            <el-input v-model="postForm.endate" placeholder="英文日期" />
           </el-col>
         </el-form-item>
         <el-form-item label="新闻封面">
@@ -74,6 +71,9 @@
             <img v-if="postForm.authorImg" :src="postForm.coverImg" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"/>
           </el-upload>
+        </el-form-item>
+        <el-form-item label="文章摘要">
+          <Tinymce ref="editor" v-model="postForm.ndigest" :height="200"/>
         </el-form-item>
         <el-form-item label="文章内容" prop="content">
           <Tinymce ref="editor" v-model="postForm.content" :height="400"/>
@@ -146,7 +146,6 @@ export default {
   methods: {
     submitForm() {
       this.$refs.postForm.validate(valid => {
-        alert(valid)
         if (valid) {
           this.loading = true
           const tempData = Object.assign({}, this.postForm)

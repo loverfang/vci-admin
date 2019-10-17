@@ -149,7 +149,7 @@ const defaultForm = {
 }
 
 export default {
-  name: 'InsightsPdfList',
+  name: 'StoriesList',
   components: { Pagination },
   filters: {
     statusFilter(status) {

@@ -186,12 +186,12 @@ export const constantRoutes = [
     name: '系统设置',
     meta: { title: '系统设置', icon: 'example' },
     children: [
-      {
-        path: 'adminlist',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: '后台账号管理', icon: 'tree' }
-      },
+      // {
+      //   path: 'adminlist',
+      //   name: 'Tree',
+      //   component: () => import('@/views/tree/index'),
+      //   meta: { title: '后台账号管理', icon: 'tree' }
+      // },
       {
         path: 'password',
         name: 'Password',

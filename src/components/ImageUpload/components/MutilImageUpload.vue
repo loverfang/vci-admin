@@ -51,7 +51,7 @@ export default {
         this.$message('请等待所有图片上传完成.如果是网络问题,请刷新本页重新上传!')
         return
       }
-
+      alert('step1')
       this.$emit('successCBK', this.listObj)
       this.dialogVisible = false
       this.listObj = {}
