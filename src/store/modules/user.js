@@ -30,6 +30,7 @@ const actions = {
         console.log(response)
         const { data } = response
         commit('SET_TOKEN', data.token)
+        commit('SET_AVATAR', 'res/dddd/dd')
         setToken(data.token)
         resolve()
       }).catch(error => {

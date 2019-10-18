@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="40" class="panel-group">
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('newVisitis')" style="background: #45544d">
+      <div class="card-panel" >
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
         </div>
@@ -10,12 +10,12 @@
             会员总数
           </div>
           <!--<count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num" />-->
-          <span class="card-panel-num">{{totalMember}}</span>
+          <span class="card-panel-num">{{ groupData.memberCount }}</span>
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('messages')">
+      <div class="card-panel" >
         <div class="card-panel-icon-wrapper icon-message">
           <svg-icon icon-class="message" class-name="card-panel-icon" />
         </div>
@@ -23,12 +23,12 @@
           <div class="card-panel-text">
             新闻总数
           </div>
-          <span class="card-panel-num">{{totalNews}}</span>
+          <span class="card-panel-num">{{ groupData.newsCount }}</span>
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('purchases')">
+      <div class="card-panel" >
         <div class="card-panel-icon-wrapper icon-star">
           <svg-icon icon-class="star" class-name="card-panel-icon" />
         </div>
@@ -36,12 +36,12 @@
           <div class="card-panel-text">
             视频总数
           </div>
-          <span class="card-panel-num">{{totalVideo}}</span>
+          <span class="card-panel-num">{{ groupData.videosCount }}</span>
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
+      <div class="card-panel">
         <div class="card-panel-icon-wrapper icon-shopping">
           <svg-icon icon-class="shopping" class-name="card-panel-icon" />
         </div>
@@ -50,7 +50,7 @@
             供应商
           </div>
           <!--<count-to :start-val="0" :end-val="13600" :duration="3600" class="card-panel-num" />-->
-          <span class="card-panel-num">{{totalVendor}}</span>
+          <span class="card-panel-num">{{ groupData.vendorCount }}</span>
         </div>
       </div>
     </el-col>
@@ -58,23 +58,25 @@
 </template>
 
 <script>
-// import CountTo from 'vue-count-to'
+import { fetchGroupData, fetchNewsList, fetchVideosList, fetchMemberList } from '@/api/dashboard'
 
 export default {
-  components: {
-    // CountTo
-  },
   data() {
     return {
-      totalMember: 5000,
-      totalNews: 3000,
-      totalVideo: 500,
-      totalVendor: 400
+      listLoading: false,
+      groupData: {}
     }
   },
+  created() {
+    this.fetchGourpData()
+  },
   methods: {
-    handleSetLineChartData(type) {
-      this.$emit('handleSetLineChartData', type)
+    fetchGourpData() {
+      this.listLoading = true
+      fetchGroupData().then(response => {
+        this.groupData = response.data;
+        this.listLoading = false
+      })
     }
   }
 }
