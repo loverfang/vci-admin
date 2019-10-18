@@ -44,7 +44,7 @@
         <el-form-item label="新闻封面">
           <el-upload
             class="avatar-uploader"
-            action="api/manage/uploadImage"
+            action="/api/manage/uploadImage"
             :show-file-list="false"
             :on-success="handleCoverImgSuccess"
             :before-upload="beforeAvatarUpload"

@@ -167,24 +167,24 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/pdfreport',
-    component: Layout,
-    children: [
-      {
-        path: 'members',
-        name: 'members',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'PDF报表管理', icon: 'pdf' }
-      }
-    ]
-  },
+  // {
+  //   path: '/pdfreport',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'members',
+  //       name: 'members',
+  //       component: () => import('@/views/form/index'),
+  //       meta: { title: 'PDF报表管理', icon: 'pdf' }
+  //     }
+  //   ]
+  // },
   {
     path: '/system',
     component: Layout,
     redirect: '/example/table',
     name: '系统设置',
-    meta: { title: '系统设置', icon: 'example' },
+    meta: { title: '系统设置', icon: 'setting' },
     children: [
       // {
       //   path: 'adminlist',

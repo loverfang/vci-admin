@@ -66,7 +66,7 @@
         <el-form-item label="新闻封面">
           <el-upload
             class="avatar-uploader"
-            action="api/manage/uploadImage"
+            action="/api/manage/uploadImage"
             :show-file-list="false"
             :on-success="handleCoverImgSuccess"
             :before-upload="beforeAvatarUpload"
@@ -78,12 +78,12 @@
         <el-form-item label="文章顶部图片">
           <el-upload
             class="avatar-uploader"
-            action="api/manage/uploadImage"
+            action="/api/manage/uploadImage"
             :show-file-list="false"
-            :on-success="handleCoverImgSuccess"
+            :on-success="handleAuthorImgSuccess"
             :before-upload="beforeAvatarUpload"
           >
-            <img v-if="postForm.coverImg" :src="postForm.coverImg" class="avatar">
+            <img v-if="postForm.authorImg" :src="postForm.authorImg" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"/>
           </el-upload>
         </el-form-item>

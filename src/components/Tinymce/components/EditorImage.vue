@@ -12,7 +12,7 @@
         :on-success="handleSuccess"
         :before-upload="beforeUpload"
         class="editor-slide-upload"
-        action="api/manage/uploadEditorImage"
+        action="/api/manage/uploadEditorImage"
         list-type="picture-card"
       >
         <el-button size="small" type="primary">

@@ -44,7 +44,7 @@ const ventorRouter = {
           path: 'list',
           component: () => import('@/views/vendor/list'),
           name: 'VendorList',
-          meta: { title: 'Vendor数据列表', icon: 'example'}
+          meta: { title: 'Vendor数据列表', icon: 'example' }
         }
       ]
     }

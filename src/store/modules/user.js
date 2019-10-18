@@ -30,7 +30,6 @@ const actions = {
         console.log(response)
         const { data } = response
         commit('SET_TOKEN', data.token)
-        commit('SET_AVATAR', 'res/dddd/dd')
         setToken(data.token)
         resolve()
       }).catch(error => {
@@ -53,6 +52,7 @@ const actions = {
         // 设置用户明
         commit('SET_NAME', empName)
         // 设置用户头像
+        // commit('SET_AVATAR', avatar)
         commit('SET_AVATAR', avatar)
         // 刷新数据
         resolve(data)
