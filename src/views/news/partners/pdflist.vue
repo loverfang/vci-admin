@@ -88,7 +88,7 @@
             <el-form-item label="文件封面">
               <el-upload
                 class="cover-uploader"
-                action="api/manage/uploadImage"
+                action="/api/manage/uploadImage"
                 :show-file-list="false"
                 list-type="picture"
                 :on-success="coverHandleSuccess"

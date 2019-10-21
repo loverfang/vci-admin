@@ -89,7 +89,7 @@
             <el-form-item label="视频封面图">
               <el-upload
                 class="cover-uploader"
-                action="api/manage/uploadImage"
+                action="/api/manage/uploadImage"
                 :show-file-list="false"
                 list-type="picture"
                 :on-success="coverHandleSuccess"
@@ -131,15 +131,6 @@ import { fetchList, saveVideo, updateVideo, updateVideoSindex, deleteVideo } fro
 import { Message } from 'element-ui'
 import userPhoto from '@/assets/default_images/default.jpg' // 设置加载失败后的默认图片
 
-const defaultForm = {
-  vid: undefined,
-  title: '',
-  vurl: '',
-  needcount: '1',
-  memo: '',
-  coverImg: ''
-}
-
 export default {
   name: 'VendorPdfList',
   components: { Pagination, Tinymce },
@@ -154,17 +145,6 @@ export default {
     }
   },
   data() {
-    const validateRequire = (rule, value, callback) => {
-      if (value === '') {
-        this.$message({
-          message: rule.field + '为必传项',
-          type: 'error'
-        })
-        callback(new Error(rule.field + '为必传项'))
-      } else {
-        callback()
-      }
-    }
     return {
       list: null,
       total: 0,
@@ -173,7 +153,14 @@ export default {
         page: 1,
         limit: 10
       },
-      postForm: Object.assign({}, defaultForm),
+      postForm: {
+        vid: undefined,
+        title: '',
+        vurl: '',
+        needcount: '1',
+        memo: '',
+        coverImg: ''
+      },
       textMap: {
         update: '编辑文件信息',
         create: '添加新文件'
@@ -185,7 +172,8 @@ export default {
       multipleSelection: [], // 存放选中的数据
       fileList: [],
       rules: {
-        name: [{ validator: validateRequire }]
+        title: [{ required: true, message: 'title is required', trigger: 'blur' }],
+        vurl: [{ required: true, message: 'vurl is required', trigger: 'blur' }]
       }
     }
   },
@@ -317,7 +305,7 @@ export default {
     },
 
     resetTemp() {
-      this.defaultForm = {
+      this.postForm = {
         vid: undefined,
         title: '',
         vurl: '',

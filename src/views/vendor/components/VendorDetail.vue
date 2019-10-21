@@ -48,7 +48,7 @@
         <el-form-item label="供应商Logo">
           <el-upload
             class="avatar-uploader"
-            action="api/manage/uploadImage"
+            action="/api/manage/uploadImage"
             :show-file-list="false"
             :on-success="handleCoverImgSuccess"
             :before-upload="beforeAvatarUpload"
@@ -140,8 +140,7 @@ export default {
   methods: {
     submitForm() {
       this.$refs.postForm.validate(valid => {
-        alert(valid)
-
+        // alert(valid)
         if (valid) {
           this.loading = true
           const tempData = Object.assign({}, this.postForm)

@@ -90,6 +90,7 @@
     <div align="right">
       <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
     </div>
+
     <!-- 添加编辑弹出框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" top="3vh">
       <el-form ref="dataForm" :rules="rules" :model="postForm" label-position="left" label-width="120px" min-width="98%">
@@ -129,7 +130,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="电话">
+            <el-form-item label="电话" prop="phone">
               <el-input v-model="postForm.phone" />
             </el-form-item>
           </el-col>
@@ -262,35 +263,6 @@
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import { fetchList, addMember, updateMember, updateMemberStatus } from '@/api/member' // 引入需要请求的路径
 
-const defaultForm = {
-  memid: undefined,
-  username: '',
-  password: '',
-  usertype: '',
-  cardnum: '',
-  name: '',
-  phone: '',
-  email: '',
-  company: '',
-  jobtitle: '',
-  vciguwen: '',
-  viewcount: 0,
-  totaldays: 0,
-  avldays: 0,
-  txt1: '',
-  txt2: '',
-  txt3: '',
-  txt4: '',
-  txt5: '',
-  txt6: '',
-  txt7: '',
-  txt8: '',
-  txt9: '',
-  txt10: '',
-  txt11: '',
-  txt12: ''
-}
-
 export default {
   name: 'MemberList',
   components: { Pagination },
@@ -304,17 +276,6 @@ export default {
     }
   },
   data() {
-    const validateRequire = (rule, value, callback) => {
-      if (value === '') {
-        this.$message({
-          message: rule.field + '为必传项',
-          type: 'error'
-        })
-        callback(new Error(rule.field + '为必传项'))
-      } else {
-        callback()
-      }
-    }
     return {
       list: null,
       total: 0,
@@ -324,7 +285,34 @@ export default {
         page: 1,
         limit: 10
       },
-      postForm: Object.assign({}, defaultForm),
+      postForm: {
+        memid: undefined,
+        username: '',
+        password: '',
+        usertype: '',
+        cardnum: '',
+        name: '',
+        phone: '',
+        email: '',
+        company: '',
+        jobtitle: '',
+        vciguwen: '',
+        viewcount: 0,
+        totaldays: 0,
+        avldays: 0,
+        txt1: '',
+        txt2: '',
+        txt3: '',
+        txt4: '',
+        txt5: '',
+        txt6: '',
+        txt7: '',
+        txt8: '',
+        txt9: '',
+        txt10: '',
+        txt11: '',
+        txt12: ''
+      },
       textMap: {
         update: '更新会员信息',
         create: '添加新会员'
@@ -332,10 +320,10 @@ export default {
       dialogFormVisible: false,
       dialogStatus: '',
       rules: {
-        username: [{ validator: validateRequire }],
-        password: [{ validator: validateRequire }],
-        name: [{ validator: validateRequire }],
-        viewcount: [{ validator: validateRequire }]
+        username: [{ required: true, message: 'username is required', trigger: 'blur' }],
+        password: [{ required: true, message: 'password is required', trigger: 'blur' }],
+        name: [{ required: true, message: 'name is required', trigger: 'blur' }],
+        phone: [{ required: true, message: 'phone is required', trigger: 'blur' }]
       }
     }
   },
@@ -390,13 +378,6 @@ export default {
         if (valid) {
           const tempData = Object.assign({}, this.postForm)
           updateMember(tempData).then(() => {
-            // for (const v of this.list) {
-            //   if (v.memid === this.postForm.memid) {
-            //     const index = this.list.indexOf(v)
-            //     this.list.splice(index, 1, this.postForm)
-            //     break
-            //   }
-            // }
             this.getList()
             this.dialogFormVisible = false
             this.$message({
@@ -407,6 +388,7 @@ export default {
         }
       })
     },
+
     handleModifyStatus(row, status) {
       const params = { memid: row.memid, status: status }
       updateMemberStatus(params).then(() => {
@@ -418,7 +400,7 @@ export default {
       })
     },
     resetTemp() {
-      this.defaultForm = {
+      this.postForm = {
         memid: undefined,
         username: '',
         password: '',

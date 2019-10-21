@@ -122,43 +122,17 @@ export const constantRoutes = [
   },
   newsRouter, // 新闻中心路由
   ventorRouter, // 供应商管理路由
-  // {
-  //   path: '/category',
-  //   component: Layout,
-  //   redirect: '/example/table',
-  //   name: 'category',
-  //   meta: { title: '供应商管理', icon: 'example' },
-  //   children: [
-  //     {
-  //       path: 'category',
-  //       name: 'Category',
-  //       component: () => import('@/views/category/index'),
-  //       meta: { title: 'Category管理', icon: 'table' }
-  //     },
-  //     {
-  //       path: 'vender',
-  //       name: 'Vender',
-  //       component: () => import('@/views/vendor/index'),
-  //       meta: { title: 'Vender 管理', icon: 'table' }
-  //     }
-  //   ]
-  // },
   {
-    path: '/videos',
+    path: '/members',
     component: Layout,
+    meta: { title: '会员信息系统', icon: 'user' },
     children: [
       {
         path: 'videos',
         name: 'Videos',
         component: () => import('@/views/videos/index'),
-        meta: { title: '视频信息管理', icon: 'eye-open' }
-      }
-    ]
-  },
-  {
-    path: '/members',
-    component: Layout,
-    children: [
+        meta: { title: '视频/MemberShip', icon: 'eye-open' }
+      },
       {
         path: 'members',
         name: 'Members',
@@ -167,18 +141,18 @@ export const constantRoutes = [
       }
     ]
   },
-  // {
-  //   path: '/pdfreport',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'members',
-  //       name: 'members',
-  //       component: () => import('@/views/form/index'),
-  //       meta: { title: 'PDF报表管理', icon: 'pdf' }
-  //     }
-  //   ]
-  // },
+  {
+    path: '/filesys',
+    component: Layout,
+    children: [
+      {
+        path: 'filelist',
+        name: 'Filelist',
+        component: () => import('@/views/form/index'),
+        meta: { title: '文件管理系统', icon: 'pdf' }
+      }
+    ]
+  },
   {
     path: '/system',
     component: Layout,
@@ -196,7 +170,7 @@ export const constantRoutes = [
         path: 'password',
         name: 'Password',
         component: () => import('@/views/system/password'),
-        meta: { title: '修改密码', icon: 'table' }
+        meta: { title: '修改密码', icon: 'setting' }
       }
     ]
   },

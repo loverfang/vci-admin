@@ -80,8 +80,8 @@ export default {
 
     return {
       loginForm: {
-        account: 'admin',
-        password: '123456'
+        account: '',
+        password: ''
       },
       loginRules: {
         account: [{ required: true, trigger: 'blur', validator: validateAccount }],

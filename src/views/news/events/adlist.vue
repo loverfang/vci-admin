@@ -20,40 +20,19 @@
           <img :src="scope.row.coverImg" min-width="70" height="40" :onerror="errorUserPhoto">
         </template>
       </el-table-column>
-      <el-table-column align="left" label="文件名称" min-width="20%" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="广告名称" min-width="20%" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
+          <span>{{ scope.row.title }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="PDF描述" min-width="35%" :show-overflow-tooltip="true">
+      <el-table-column align="left" label="链接地址" min-width="35%" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <span>{{ scope.row.intor }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="大小" min-width="8%" :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          <span>{{ scope.row.psize }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="排序索引" min-width="8%">
-        <template slot-scope="{row}">
-          <el-input v-model="row.sindex" size="small" class="sindex-input"  @blur="handleModifyIndex(row)"/>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="下载次数" min-width="8%">
-        <template slot-scope="scope">
-          <span>{{ scope.row.downcount }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="PDF文件" min-width="8%">
-        <template slot-scope="scope">
-          <span v-if="scope.row.pdfPath !== null">已上传</span>
-          <span v-else>未上传</span>
+          <span>{{ scope.row.link }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="发布时间" min-width="10%">
         <template slot-scope="scope">
-          <span>{{ scope.row.addtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span>{{ scope.row.uptime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" min-width="8%">
@@ -70,22 +49,22 @@
       <el-form ref="dataForm" :rules="rules" :model="postForm" label-position="left" label-width="120px" min-width="98%">
         <el-row :gutter="10" height="30px;">
           <el-col :span="12">
-            <el-form-item label="PDF文件名" prop="name">
-              <el-input v-model="postForm.name" />
+            <el-form-item label="广告标题" prop="name">
+              <el-input v-model="postForm.title" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :span="20">
-            <el-form-item label="备注">
-              <el-input v-model="postForm.intor" type="textarea"/>
+            <el-form-item label="链接地址">
+              <el-input v-model="postForm.link" type="textarea"/>
             </el-form-item>
           </el-col>
         </el-row>
 
         <el-row :gutter="10">
           <el-col :span="12">
-            <el-form-item label="文件封面">
+            <el-form-item label="广告封面">
               <el-upload
                 class="cover-uploader"
                 action="/api/manage/uploadImage"
@@ -96,22 +75,6 @@
                 <div slot="tip" class="el-upload__tip">上传成功后,点击图片重新上传</div>
                 <img v-if="postForm.coverImg" :src="postForm.coverImg" class="avatar">
                 <i v-else class="el-icon-plus cover-uploader-icon"></i>
-              </el-upload>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :span="12">
-            <el-form-item label="PDF文件">
-              <el-upload
-                class="pdf-uploader"
-                action="/api/manage/uploadFile"
-                :on-success="pdfHandleSuccess"
-                :limit = 1
-                :on-exceed="pdfHandlerLimit"
-                :file-list="fileList">
-                <el-button size="small" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传PDF文件,且不超过20M</div>
               </el-upload>
             </el-form-item>
           </el-col>
@@ -131,10 +94,19 @@
 
 <script>
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
-import { fetchList, savePdf, updatePdf, updateSindex, deletePdf } from '@/api/newspdf' // 引入需要请求的路径
+import { fetchList, saveAd, updateAd, deleteAd } from '@/api/newsad.js' // 引入需要请求的路径
 
 import { Message } from 'element-ui'
+
 import userPhoto from '@/assets/default_images/default.jpg' // 设置加载失败后的默认图片
+
+const defaultForm = {
+  pid: undefined,
+  nid: '',
+  title: '',
+  link: '',
+  coverImg: ''
+}
 
 export default {
   name: 'EventsPdfList',
@@ -149,6 +121,17 @@ export default {
     }
   },
   data() {
+    const validateRequire = (rule, value, callback) => {
+      if (value === '') {
+        this.$message({
+          message: rule.field + '为必传项',
+          type: 'error'
+        })
+        callback(new Error(rule.field + '为必传项'))
+      } else {
+        callback()
+      }
+    }
     return {
       list: null,
       total: 0,
@@ -159,20 +142,10 @@ export default {
         page: 1,
         limit: 10
       },
-      postForm: {
-        pid: undefined,
-        nid: '',
-        source: 'news',
-        name: '',
-        pdfPath: '',
-        pdfname: '',
-        psize: '',
-        intor: '',
-        coverImg: ''
-      },
+      postForm: Object.assign({}, defaultForm),
       textMap: {
-        update: '编辑文件信息',
-        create: '添加新文件'
+        update: '编辑广告信息',
+        create: '添加新广告'
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -180,7 +153,7 @@ export default {
       multipleSelection: [], // 存放选中的数据
       fileList: [],
       rules: {
-        name: [{ required: true, message: 'name is required', trigger: 'blur' }]
+        name: [{ validator: validateRequire }]
       }
     }
   },
@@ -208,6 +181,7 @@ export default {
       this.multipleSelection = val
     },
     handleCreate() {
+      // this.resetTemp()
       this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
@@ -218,7 +192,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          savePdf(this.postForm).then(() => {
+          saveAd(this.postForm).then(() => {
             this.getList()
             this.dialogFormVisible = false
             this.$message({
@@ -232,7 +206,6 @@ export default {
 
     handleUpdate(row) {
       this.postForm = Object.assign({}, row) // copy obj
-      this.fileList = [{ url: row.pdfPath, name: row.pdfname }]
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -244,7 +217,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.postForm)
-          updatePdf(tempData).then(() => {
+          updateAd(tempData).then(() => {
             this.getList()
             this.dialogFormVisible = false
             this.$message({
@@ -254,18 +227,6 @@ export default {
           })
         }
       })
-    },
-    handleModifyIndex(row) {
-      if (this.postForm.sindex !== row.sindex) {
-        const params = { pid: row.pid, sindex: row.sindex }
-        updateSindex(params).then(() => {
-          this.$message({
-            message: '操作成功!',
-            type: 'success'
-          })
-          this.getList()
-        })
-      }
     },
 
     deleteSelectionAll() {
@@ -278,14 +239,14 @@ export default {
         })
         return false
       }
-      const pids = this.multipleSelection.map(item => item.pid).join() // 获取所有选中行的id组成的字符串，以逗号分隔
+      const ids = this.multipleSelection.map(item => item.id).join() // 获取所有选中行的id组成的字符串，以逗号分隔
       this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        console.log(pids)
-        deletePdf({ pids: pids, source: 'vendor' }).then(response => {
+        console.log(ids)
+        deleteAd({ ids: ids, source: 'news' }).then(response => {
           if (response.flag === 1) {
             Message({
               message: '删除成功!',
@@ -314,17 +275,14 @@ export default {
     },
 
     resetTemp() {
-      this.postForm = {
+      this.defaultForm = {
         pid: undefined,
         nid: '',
-        source: 'news',
-        name: '',
-        pdfPath: '',
-        pdfname: '',
-        psize: '',
-        intor: '',
+        title: '',
+        link: '',
         coverImg: ''
       }
+      this.postForm = Object.assign({}, this.defaultForm) // copy obj
     },
 
     coverHandleSuccess(res, file) {

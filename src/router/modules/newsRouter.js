@@ -57,40 +57,47 @@ const newsRouter = {
       redirect: '/news/events/list',
       name: 'Events',
       component: () => import('@/views/news/index'),
-      meta: { title: 'Partners', icon: 'list' },
+      meta: { title: 'Events', icon: 'list' },
       children: [
         {
           path: 'create',
           component: () => import('@/views/news/events/create'),
-          name: 'CreateStories',
-          meta: { title: 'Create Stories', icon: 'example' },
+          name: 'CreateEvents',
+          meta: { title: 'Create Events', icon: 'example' },
           hidden: true
         },
         {
           path: 'edit/:id(\\d+)',
           component: () => import('@/views/news/events/edit'),
-          name: 'EditStories',
-          meta: { title: 'Edit Stories' },
+          name: 'EditEvents',
+          meta: { title: 'Edit Events' },
           hidden: true
         },
         {
           path: 'imglist/:id(\\d+)',
           component: () => import('@/views/news/events/imglist'),
-          name: 'StoriesImgList',
-          meta: { title: 'Stories 图片管理' },
+          name: 'EventsImgList',
+          meta: { title: 'Events 图片管理' },
           hidden: true
         },
         {
           path: 'pdflist/:id(\\d+)',
           component: () => import('@/views/news/events/pdflist'),
-          name: 'StoriesPdfList',
-          meta: { title: 'Stories PDF文件管理' },
+          name: 'EventsPdfList',
+          meta: { title: 'Events PDF文件管理' },
+          hidden: true
+        },
+        {
+          path: 'adlist/:id(\\d+)',
+          component: () => import('@/views/news/events/adlist'),
+          name: 'EventsAList',
+          meta: { title: 'Events 广告管理' },
           hidden: true
         },
         {
           path: 'list',
           component: () => import('@/views/news/events/index'),
-          name: 'InsightsList',
+          name: 'EventsList',
           meta: { title: 'VCI Events管理' }
         }
       ]
@@ -134,7 +141,7 @@ const newsRouter = {
           path: 'list',
           component: () => import('@/views/news/partners/index'),
           name: 'InsightsList',
-          meta: { title: 'Partners管理'}
+          meta: { title: 'Partners管理' }
         }
       ]
     },
@@ -181,35 +188,6 @@ const newsRouter = {
         }
       ]
     }
-    // {
-    //   path: '',
-    //   redirect: '/news/stories/list',
-    //   name: 'Stories',
-    //   component: () => import('@/views/news/index'),
-    //   meta: { title: 'VCI Stories', icon: 'example' },
-    //   children: [
-    //     {
-    //       path: 'create',
-    //       component: () => import('@/views/news/stories/create'),
-    //       name: 'CreateStories',
-    //       meta: { title: 'Create Stories', icon: 'edit' },
-    //       hidden: true
-    //     },
-    //     {
-    //       path: 'edit/:id(\\d+)',
-    //       component: () => import('@/views/news/stories/edit'),
-    //       name: 'EditStories',
-    //       meta: { title: 'Edit Stories', noCache: true },
-    //       hidden: true
-    //     },
-    //     {
-    //       path: 'list',
-    //       component: () => import('@/views/news/stories/index'),
-    //       name: 'StoriesList',
-    //       meta: { title: '', icon: 'list' }
-    //     }
-    //   ]
-    // }
   ]
 }
 export default newsRouter

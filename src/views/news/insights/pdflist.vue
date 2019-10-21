@@ -88,7 +88,7 @@
             <el-form-item label="文件封面">
               <el-upload
                 class="cover-uploader"
-                action="api/manage/uploadImage"
+                action="/api/manage/uploadImage"
                 :show-file-list="false"
                 list-type="picture"
                 :on-success="coverHandleSuccess"
@@ -136,18 +136,6 @@ import { fetchList, savePdf, updatePdf, updateSindex, deletePdf } from '@/api/ne
 import { Message } from 'element-ui'
 import userPhoto from '@/assets/default_images/default.jpg' // 设置加载失败后的默认图片
 
-const defaultForm = {
-  pid: undefined,
-  nid: '',
-  source: 'news',
-  name: '',
-  pdfPath: '',
-  pdfname: '',
-  psize: '',
-  intor: '',
-  coverImg: ''
-}
-
 export default {
   name: 'InsightsPdfList',
   components: { Pagination },
@@ -161,17 +149,6 @@ export default {
     }
   },
   data() {
-    const validateRequire = (rule, value, callback) => {
-      if (value === '') {
-        this.$message({
-          message: rule.field + '为必传项',
-          type: 'error'
-        })
-        callback(new Error(rule.field + '为必传项'))
-      } else {
-        callback()
-      }
-    }
     return {
       list: null,
       total: 0,
@@ -182,7 +159,17 @@ export default {
         page: 1,
         limit: 10
       },
-      postForm: Object.assign({}, defaultForm),
+      postForm: {
+        pid: undefined,
+        nid: '',
+        source: 'news',
+        name: '',
+        pdfPath: '',
+        pdfname: '',
+        psize: '',
+        intor: '',
+        coverImg: ''
+      },
       textMap: {
         update: '编辑文件信息',
         create: '添加新文件'
@@ -193,7 +180,7 @@ export default {
       multipleSelection: [], // 存放选中的数据
       fileList: [],
       rules: {
-        name: [{ validator: validateRequire }]
+        name: [{ required: true, message: 'name is required', trigger: 'blur' }]
       }
     }
   },
@@ -327,7 +314,7 @@ export default {
     },
 
     resetTemp() {
-      this.defaultForm = {
+      this.postForm = {
         pid: undefined,
         nid: '',
         source: 'news',

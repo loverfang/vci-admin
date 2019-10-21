@@ -5,7 +5,7 @@
       <el-button class="filter-item" type="info" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit"  @click="handleCreate">
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="warning" icon="el-icon-delete" @click="deleteSelectionAll">
@@ -21,8 +21,8 @@
       />
       <el-table-column align="center" label="预览" min-width="10%">
         <template slot-scope="scope">
-          <img :src="scope.row.coverImg" min-width="70" height="40" :onerror="errorUserPhoto" v-if="scope.row.coverImg !== null">
-          <img :src="userPhoto" min-width="70" height="40" v-if="scope.row.coverImg === null">
+          <img v-if="scope.row.coverImg !== null" :src="scope.row.coverImg" min-width="70" height="40" :onerror="errorUserPhoto">
+          <img v-if="scope.row.coverImg === null" :src="userPhoto" min-width="70" height="40">
         </template>
       </el-table-column>
       <el-table-column align="left" label="Banner标题" min-width="20%" :show-overflow-tooltip="true">
@@ -37,7 +37,7 @@
       </el-table-column>
       <el-table-column align="center" label="排序索引" min-width="10%">
         <template slot-scope="{row}">
-          <el-input v-model="row.sindex" size="small" class="sindex-input"  @blur="handleModifyIndex(row)"/>
+          <el-input v-model="row.sindex" size="small" class="sindex-input" @blur="handleModifyIndex(row)" />
         </template>
       </el-table-column>
       <el-table-column align="center" label="状态" min-width="10%" :show-overflow-tooltip="true">
@@ -66,13 +66,13 @@
       </el-table-column>
       <el-table-column align="center" label="操作" min-width="20%">
         <template slot-scope="{row}">
-        <el-button type="primary" size="small" icon="el-icon-edit" @click="handleUpdate(row)">编辑</el-button>
-        <el-button v-if="row.status!=='NORMAL'" size="mini" type="success" @click="handleModifyStatus(row,'NORMAL')">
-          恢复
-        </el-button>
-        <el-button v-if="row.status!=='LOCKED'" size="mini" type="danger" @click="handleModifyStatus(row,'LOCKED')">
-          锁定
-        </el-button>
+          <el-button type="primary" size="small" icon="el-icon-edit" @click="handleUpdate(row)">编辑</el-button>
+          <el-button v-if="row.status!=='NORMAL'" size="mini" type="success" @click="handleModifyStatus(row,'NORMAL')">
+            恢复
+          </el-button>
+          <el-button v-if="row.status!=='LOCKED'" size="mini" type="danger" @click="handleModifyStatus(row,'LOCKED')">
+            锁定
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -85,14 +85,14 @@
       <el-form ref="dataForm" :rules="rules" :model="postForm" label-position="left" label-width="120px" min-width="98%">
         <el-row :gutter="10" height="30px;">
           <el-col :span="12">
-            <el-form-item label="Banner名称" prop="name">
+            <el-form-item label="Banner名称" prop="adtitle">
               <el-input v-model="postForm.adtitle" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10" height="30px;">
           <el-col :span="12">
-            <el-form-item label="Banner地址" prop="name">
+            <el-form-item label="Banner地址" prop="adurl">
               <el-input v-model="postForm.adurl" />
             </el-form-item>
           </el-col>
@@ -106,10 +106,11 @@
                 :show-file-list="false"
                 list-type="picture"
                 :on-success="coverHandleSuccess"
-                :before-upload="coverBeforeUpload">
+                :before-upload="coverBeforeUpload"
+              >
                 <div slot="tip" class="el-upload__tip">上传成功后,点击图片重新上传</div>
                 <img v-if="postForm.coverImg" :src="postForm.coverImg" class="avatar">
-                <i v-else class="el-icon-plus cover-uploader-icon"></i>
+                <i v-else class="el-icon-plus cover-uploader-icon" />
               </el-upload>
             </el-form-item>
           </el-col>
@@ -135,13 +136,6 @@ import { fetchList, saveAdvertise, updateAdvertise, updateAdvertiseSindex, updat
 import { Message } from 'element-ui'
 import userPhoto from '@/assets/default_images/default.jpg' // 设置加载失败后的默认图片
 
-const defaultForm = {
-  adid: undefined,
-  adtitle: '',
-  adurl: '',
-  coverImg: ''
-}
-
 export default {
   name: 'VendorPdfList',
   components: { Pagination },
@@ -156,17 +150,6 @@ export default {
     }
   },
   data() {
-    const validateRequire = (rule, value, callback) => {
-      if (value === '') {
-        this.$message({
-          message: rule.field + '为必传项',
-          type: 'error'
-        })
-        callback(new Error(rule.field + '为必传项'))
-      } else {
-        callback()
-      }
-    }
     return {
       list: null,
       total: 0,
@@ -175,7 +158,12 @@ export default {
         page: 1,
         limit: 10
       },
-      postForm: Object.assign({}, defaultForm),
+      postForm: {
+        adid: undefined,
+        adtitle: '',
+        adurl: '',
+        coverImg: ''
+      },
       textMap: {
         update: '编辑文件信息',
         create: '添加新文件'
@@ -187,7 +175,8 @@ export default {
       multipleSelection: [], // 存放选中的数据
       fileList: [],
       rules: {
-        name: [{ validator: validateRequire }]
+        adtitle: [{ required: true, message: 'title is required', trigger: 'blur' }],
+        adurl: [{ required: true, message: 'adurl is required', trigger: 'blur' }]
       }
     }
   },
@@ -330,7 +319,7 @@ export default {
     },
 
     resetTemp() {
-      this.defaultForm = {
+      this.postForm = {
         adid: undefined,
         adtitle: '',
         adurl: '',

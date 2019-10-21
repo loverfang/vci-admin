@@ -29,7 +29,7 @@
 
       <el-table-column align="center" label="顶部图片" min-width="10%" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <img :src="scope.row.coverImg" min-width="70" height="40" :onerror="errorUserPhoto">
+          <img :src="scope.row.authorImg" min-width="70" height="40" :onerror="errorUserPhoto">
         </template>
       </el-table-column>
 
@@ -73,7 +73,7 @@
             PDF管理
           </el-button>
           </router-link>
-          <router-link :to="'/news/insights/edit/' + scope.row.nid">
+          <router-link :to="'/news/events/adlist/' + scope.row.nid">
             <el-button type="primary" size="small" icon="el-icon-edit">
               广告管理
             </el-button>
