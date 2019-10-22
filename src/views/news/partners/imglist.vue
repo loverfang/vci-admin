@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <NewsImageUpload ref="imageUpload" :nid="listQuery.nid" @successUploadCBK="getList"/>
+      <NewsImageUpload ref="imageUpload" :nid="listQuery.nid" @successUploadCBK="getList" />
       <div class="editor-upload-btn">
         <el-button style="margin-left: 10px;" type="warning" icon="el-icon-delete" @click="deleteSelectionAll">
           删除选择行
@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%" @selection-change="handleSelectionChange">>
+    <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column
         type="selection"
         width="50"
@@ -34,7 +34,7 @@
       </el-table-column>
       <el-table-column align="center" label="排序索引" min-width="8%">
         <template slot-scope="{row}">
-          <el-input v-model="row.sindex" size="small" class="sindex-input" @blur="handleModifyIndex(row)"/>
+          <el-input v-model="row.sindex" size="small" class="sindex-input" @blur="handleModifyIndex(row)" />
         </template>
       </el-table-column>
 

@@ -12,16 +12,16 @@
       <div class="createPost-main-container">
         <el-form-item label="页面标题">
           <el-col :span="11">
-            <el-input v-model="postForm.ptitle" placeholder="页面标题"/>
+            <el-input v-model="postForm.ptitle" placeholder="页面标题" />
           </el-col>
         </el-form-item>
         <el-form-item label="页面关键词">
           <el-col :span="11">
-            <el-input v-model="postForm.pkeywords" placeholder="页面关键词"/>
+            <el-input v-model="postForm.pkeywords" placeholder="页面关键词" />
           </el-col>
         </el-form-item>
         <el-form-item label="页面描述">
-          <el-input v-model="postForm.pdescription" type="textarea" :rows="2" placeholder="页面描述"/>
+          <el-input v-model="postForm.pdescription" type="textarea" :rows="2" placeholder="页面描述" />
         </el-form-item>
         <el-form-item label="所属栏目" prop="ntype">
           <el-select v-model="postForm.ntype">
@@ -31,13 +31,13 @@
 
         <el-form-item label="伙伴名称" prop="title">
           <el-col :span="11">
-            <el-input v-model="postForm.title" placeholder="伙伴名称"/>
+            <el-input v-model="postForm.title" placeholder="伙伴名称" />
           </el-col>
         </el-form-item>
 
         <el-form-item label="公司网址">
           <el-col :span="11">
-            <el-input v-model="postForm.author" placeholder="公司网址"/>
+            <el-input v-model="postForm.author" placeholder="公司网址" />
           </el-col>
         </el-form-item>
 
@@ -51,12 +51,12 @@
           >
             <div slot="tip" class="el-upload__tip">请上传335 x 196像素的图片,重新上传请点击图片!</div>
             <img v-if="postForm.coverImg" :src="postForm.coverImg" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"/>
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
           </el-upload>
         </el-form-item>
 
         <el-form-item label="伙伴介绍" prop="content">
-          <Tinymce ref="editor" v-model="postForm.content" :height="400"/>
+          <Tinymce ref="editor" v-model="postForm.content" :height="400" />
         </el-form-item>
       </div>
     </el-form>

@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit"  @click="handleCreate">
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="warning" icon="el-icon-delete" @click="deleteSelectionAll">
@@ -37,7 +37,7 @@
       </el-table-column>
       <el-table-column align="center" label="排序索引" min-width="8%">
         <template slot-scope="{row}">
-          <el-input v-model="row.sindex" size="small" class="sindex-input"  @blur="handleModifyIndex(row)"/>
+          <el-input v-model="row.sindex" size="small" class="sindex-input" @blur="handleModifyIndex(row)" />
         </template>
       </el-table-column>
       <el-table-column align="center" label="下载次数" min-width="8%">
@@ -58,7 +58,7 @@
       </el-table-column>
       <el-table-column align="center" label="操作" min-width="8%">
         <template slot-scope="{row}">
-        <el-button type="primary" size="small" icon="el-icon-edit" @click="handleUpdate(row)">编辑</el-button>
+          <el-button type="primary" size="small" icon="el-icon-edit" @click="handleUpdate(row)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -78,7 +78,7 @@
         <el-row :gutter="10">
           <el-col :span="20">
             <el-form-item label="备注">
-              <el-input v-model="postForm.intor" type="textarea"/>
+              <el-input v-model="postForm.intor" type="textarea" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -92,10 +92,11 @@
                 :show-file-list="false"
                 list-type="picture"
                 :on-success="coverHandleSuccess"
-                :before-upload="coverBeforeUpload">
+                :before-upload="coverBeforeUpload"
+              >
                 <div slot="tip" class="el-upload__tip">请上传270 x360像素的图片,重新上传请点击图片!</div>
                 <img v-if="postForm.coverImg" :src="postForm.coverImg" class="avatar">
-                <i v-else class="el-icon-plus cover-uploader-icon"></i>
+                <i v-else class="el-icon-plus cover-uploader-icon" />
               </el-upload>
             </el-form-item>
           </el-col>
@@ -107,9 +108,10 @@
                 class="pdf-uploader"
                 action="/api/manage/uploadFile"
                 :on-success="pdfHandleSuccess"
-                :limit = 1
+                :limit="1"
                 :on-exceed="pdfHandlerLimit"
-                :file-list="fileList">
+                :file-list="fileList"
+              >
                 <el-button size="small" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传PDF文件,且不超过20M</div>
               </el-upload>

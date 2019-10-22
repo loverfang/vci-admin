@@ -80,7 +80,7 @@
         <el-row :gutter="10" height="30px;">
           <el-col :span="15">
             <el-form-item label="所需次数" prop="needcount">
-              <el-input v-model="postForm.needcount"  v-only-number="{max:10000,min:0,precision:0}"/>
+              <el-input v-model="postForm.needcount" v-only-number="{max:10000,min:0,precision:0}" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -105,7 +105,7 @@
         <el-row :gutter="10" height="30px;">
           <el-col :span="24">
             <el-form-item label="视频简介" prop="memo">
-              <Tinymce ref="editor" v-model="postForm.memo" :height="120"/>
+              <Tinymce ref="editor" v-model="postForm.memo" :height="120" />
             </el-form-item>
           </el-col>
         </el-row>

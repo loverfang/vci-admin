@@ -1,14 +1,10 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <div class="editor-upload-btn">
-      <el-input class="filter-item"  v-model="listQuery.name" placeholder="File Name" style="width: 280px;" @keyup.enter.native="handleFilter" />
-      </div>
-      <div class="editor-upload-btn">
-      <el-button class="filter-item" type="info" icon="el-icon-search" @click="handleFilter">
+      <el-input v-model="listQuery.title" placeholder="Insights Title" style="width: 280px;margin-bottom: 2px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-button class="filter-item" type="info"  style="margin-bottom: 2px;" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
-      </div>
       <FilesUpload ref="fileUpload" :parentId="listQuery.fid" @successUploadCBK="getList" />
       <div class="editor-upload-btn">
         <el-button type="warning" icon="el-icon-delete" @click="deleteSelectionAll">
@@ -40,7 +36,7 @@
       </el-table-column>
       <el-table-column align="center" label="下载地址" min-width="30%">
         <template slot-scope="{row}">
-          <span>http://vcintegration.com/download?fileId={{ row.fid}}</span>
+          <span>http://vcintegration.com/download?fileId={{ row.fid }}</span>
         </template>
       </el-table-column>
 

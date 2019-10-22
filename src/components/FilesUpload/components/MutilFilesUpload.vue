@@ -12,7 +12,7 @@
         :on-success="handleSuccess"
         :before-upload="beforeUpload"
         class="editor-slide-upload"
-        action="api/manage/uploadFile"
+        action="/api/manage/uploadFile"
       >
         <el-button size="small" type="primary">
           点击选择

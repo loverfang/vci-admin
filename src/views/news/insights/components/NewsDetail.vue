@@ -12,16 +12,16 @@
       <div class="createPost-main-container">
         <el-form-item label="页面标题">
           <el-col :span="11">
-            <el-input v-model="postForm.ptitle" placeholder="页面标题"/>
+            <el-input v-model="postForm.ptitle" placeholder="页面标题" />
           </el-col>
         </el-form-item>
         <el-form-item label="页面关键词">
           <el-col :span="11">
-            <el-input v-model="postForm.pkeywords" placeholder="页面关键词"/>
+            <el-input v-model="postForm.pkeywords" placeholder="页面关键词" />
           </el-col>
         </el-form-item>
         <el-form-item label="页面描述">
-          <el-input v-model="postForm.pdescription" type="textarea" :rows="2" placeholder="页面描述"/>
+          <el-input v-model="postForm.pdescription" type="textarea" :rows="2" placeholder="页面描述" />
         </el-form-item>
         <el-form-item label="所属栏目" prop="ntype">
           <el-select v-model="postForm.ntype">
@@ -30,17 +30,17 @@
         </el-form-item>
         <el-form-item label="栏目标签/类型">
           <el-col :span="11">
-            <el-input v-model="postForm.nlable" placeholder="栏目标签/类型"/>
+            <el-input v-model="postForm.nlable" placeholder="栏目标签/类型" />
           </el-col>
         </el-form-item>
         <el-form-item label="文章标题" prop="title">
           <el-col :span="11">
-            <el-input v-model="postForm.title" placeholder="文章标题"/>
+            <el-input v-model="postForm.title" placeholder="文章标题" />
           </el-col>
         </el-form-item>
         <el-form-item label="作者">
           <el-col :span="11">
-            <el-input v-model="postForm.author" placeholder="作者/来源"/>
+            <el-input v-model="postForm.author" placeholder="作者/来源" />
           </el-col>
         </el-form-item>
         <el-form-item label="英文日期">
@@ -58,7 +58,7 @@
           >
             <div slot="tip" class="el-upload__tip">请上传329 x 264像素的图片,重新上传请点击图片!</div>
             <img v-if="postForm.coverImg" :src="postForm.coverImg" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"/>
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
           </el-upload>
         </el-form-item>
         <el-form-item label="作者头像">
@@ -70,14 +70,14 @@
             :before-upload="beforeAvatarUpload"
           >
             <img v-if="postForm.authorImg" :src="postForm.authorImg" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"/>
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
           </el-upload>
         </el-form-item>
         <el-form-item label="文章摘要">
-          <Tinymce ref="editor" v-model="postForm.ndigest" :height="200"/>
+          <Tinymce ref="editor" v-model="postForm.ndigest" :height="200" />
         </el-form-item>
         <el-form-item label="文章内容" prop="content">
-          <Tinymce ref="editor" v-model="postForm.content" :height="400"/>
+          <Tinymce ref="editor" v-model="postForm.content" :height="400" />
         </el-form-item>
       </div>
     </el-form>
