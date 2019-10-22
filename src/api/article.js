@@ -107,3 +107,22 @@ export function updateStories(data) {
     data
   })
 }
+
+
+// 新增Stories类型的新闻
+export function createEvents(data) {
+  return request({
+    url: 'manage/createEvents',
+    method: 'post',
+    data
+  })
+}
+
+// 修改Stories类型的新闻
+export function updateEvents(data) {
+  return request({
+    url: 'manage/updateEvents',
+    method: 'post',
+    data
+  })
+}

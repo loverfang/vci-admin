@@ -148,7 +148,7 @@ export const constantRoutes = [
       {
         path: 'filelist',
         name: 'Filelist',
-        component: () => import('@/views/form/index'),
+        component: () => import('@/views/vcifiles/index'),
         meta: { title: '文件管理系统', icon: 'pdf' }
       }
     ]

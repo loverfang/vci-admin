@@ -109,7 +109,7 @@
 import Tinymce from '@/components/Tinymce'
 import Sticky from '@/components/Sticky' // 粘性header组件
 
-import { fetchNewsDetail, createStories, updateStories } from '@/api/article'
+import { fetchNewsDetail, createEvents, updateEvents } from '@/api/article'
 const defaultForm = {
   nid: '',
   status: 'draft',
@@ -179,7 +179,7 @@ export default {
           console.log('请求数据' + tempData)
 
           if (!this.isEdit) { // 不是编辑即添加
-            createStories(tempData).then(() => {
+            createEvents(tempData).then(() => {
               this.$notify({
                 title: '成功',
                 message: '修改文章成功',
@@ -188,7 +188,7 @@ export default {
               })
             })
           } else {
-            updateStories(tempData).then(() => {
+            updateEvents(tempData).then(() => {
               this.$notify({
                 title: '成功',
                 message: '发布文章成功',
