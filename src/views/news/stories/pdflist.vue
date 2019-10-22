@@ -93,7 +93,7 @@
                 list-type="picture"
                 :on-success="coverHandleSuccess"
                 :before-upload="coverBeforeUpload">
-                <div slot="tip" class="el-upload__tip">上传成功后,点击图片重新上传</div>
+                <div slot="tip" class="el-upload__tip">请上传270 x360像素的图片,重新上传请点击图片!</div>
                 <img v-if="postForm.coverImg" :src="postForm.coverImg" class="avatar">
                 <i v-else class="el-icon-plus cover-uploader-icon"></i>
               </el-upload>

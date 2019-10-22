@@ -1,7 +1,7 @@
 <template>
   <div class="upload-container">
     <el-button icon="el-icon-upload" size="normal" type="primary" @click="dialogVisible=true">
-      上传图片
+      上传文件
     </el-button>
     <el-dialog :visible.sync="dialogVisible">
       <el-upload
@@ -12,8 +12,7 @@
         :on-success="handleSuccess"
         :before-upload="beforeUpload"
         class="editor-slide-upload"
-        action="/api/manage/uploadImage"
-        list-type="picture-card"
+        action="api/manage/uploadFile"
       >
         <el-button size="small" type="primary">
           点击选择
@@ -33,7 +32,7 @@
 
 <script>
 export default {
-  name: 'MutilImageUpload',
+  name: 'MutilFilesUpload',
   data() {
     return {
       dialogVisible: false,
@@ -62,20 +61,24 @@ export default {
       const objKeyArr = Object.keys(this.listObj)
       for (let i = 0, len = objKeyArr.length; i < len; i++) {
         if (this.listObj[objKeyArr[i]].uid === uid) {
-          // 用于页面显示控制的文件列表
-          this.listObj[objKeyArr[i]].hasSuccess = true
-          // 文件名
-          this.listObj[objKeyArr[i]].fileName = response.data.fileName
-          // 扩展名
-          this.listObj[objKeyArr[i]].extName = response.data.extName
-          // 文件大小，字节
-          this.listObj[objKeyArr[i]].fileSize = response.data.fileSize
-          // 文件存储在服务器的相对地址
-          this.listObj[objKeyArr[i]].serverPath = response.data.serverPath
-
-          // 修改默认的图片显示内容
-          file.url = response.data.serverPath
-          file.name = response.data.fileName
+          if (response && response.flag === 1) {
+            // 用于页面显示控制的文件列表
+            this.listObj[objKeyArr[i]].hasSuccess = true
+            // 文件名
+            this.listObj[objKeyArr[i]].fileName = response.data.fileName
+            // 扩展名
+            this.listObj[objKeyArr[i]].extName = response.data.extName
+            // 文件大小，字节
+            this.listObj[objKeyArr[i]].fileSize = response.data.fileSize
+            // 文件存储在服务器的相对地址
+            this.listObj[objKeyArr[i]].serverPath = response.data.serverPath
+            // 修改默认的图片显示内容
+            file.url = response.data.serverPath
+            file.name = response.data.fileName
+          } else {
+            // 用于页面显示控制的文件列表
+            this.listObj[objKeyArr[i]].hasSuccess = false
+          }
           return
         }
       }
@@ -103,35 +106,36 @@ export default {
         window.URL标准定义，
         window.webkitURL是webkit内核的实现（一般手机上就是使用这个），还有火狐等浏览器的实现。
       **/
-      const _URL = window.URL || window.webkitURL || window.mozURL
+      // const _URL = window.URL || window.webkitURL || window.mozURL
       const fileName = file.uid
       this.listObj[fileName] = {}
 
       // 图片类型和大小判断
-      const reg = new RegExp('[.jpg|.png]$')
-      if (Math.floor(file.size / 1024 / 1024) < 2) {
+      const reg = new RegExp('[.pdf|.doc|.docx|.xlsx|.xls]$')
+      if (Math.floor(file.size / 1024 / 1024) < 20) {
         if (file && reg.test(file.type)) {
-          console.log('图片格式验证通过!')
+          console.log('文件格式验证通过!')
+          this.listObj[fileName] = { hasSuccess: false, uid: file.uid }
         } else {
-          this.$message.error('图片格式不正确，请上传JPG或PNG格式的图片！')
+          this.$message.error('文件格式不正确，请上传.pdf|.doc|.docx|.xlsx|.xls类型的文件！')
           return false
         }
       } else {
-        this.$message.error('只能上传小于2MB的图片！')
+        this.$message.error('只能上传小于20MB的文件！')
         return false
       }
 
       // 图片加载完成后得到图片的宽度和高度
-      return new Promise((resolve, reject) => {
-        const img = new Image()
-        img.src = _URL.createObjectURL(file)
-        if (img) {
-          img.onload = () => {
-            this.listObj[fileName] = { hasSuccess: false, uid: file.uid, width: img.width, height: img.height }
-          }
-        }
-        resolve(true)
-      })
+      // return new Promise((resolve, reject) => {
+      //   const img = new Image()
+      //   img.src = _URL.createObjectURL(file)
+      //   if (img) {
+      //     img.onload = () => {
+      //       this.listObj[fileName] = { hasSuccess: false, uid: file.uid, width: img.width, height: img.height }
+      //     }
+      //   }
+      //   resolve(true)
+      // })
     }
   }
 }

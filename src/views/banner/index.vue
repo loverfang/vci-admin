@@ -108,7 +108,7 @@
                 :on-success="coverHandleSuccess"
                 :before-upload="coverBeforeUpload"
               >
-                <div slot="tip" class="el-upload__tip">上传成功后,点击图片重新上传</div>
+                <div slot="tip" class="el-upload__tip">请上传1920 x 603像素的图片,重新上传请点击图片</div>
                 <img v-if="postForm.coverImg" :src="postForm.coverImg" class="avatar">
                 <i v-else class="el-icon-plus cover-uploader-icon" />
               </el-upload>
@@ -337,10 +337,10 @@ export default {
       const isLt2M = file.size / 1024 / 1024 < 2
 
       if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
+        this.$message.error('图片只能是 JPG 格式!')
       }
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
+        this.$message.error('图片大小不能超过 2MB!')
       }
       return isJPG && isLt2M
     }

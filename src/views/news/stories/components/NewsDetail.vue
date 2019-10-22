@@ -71,6 +71,7 @@
             :on-success="handleCoverImgSuccess"
             :before-upload="beforeAvatarUpload"
           >
+            <div slot="tip" class="el-upload__tip">请上传339 x 228像素的图片,重新上传请点击图片!</div>
             <img v-if="postForm.coverImg" :src="postForm.coverImg" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"/>
           </el-upload>

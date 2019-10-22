@@ -1,17 +1,17 @@
 <template>
   <!-- 右边的图片上传图标 -->
-  <MutilImageUpload class="editor-upload-btn" @successCBK="imageSuccessCBK" />
+  <MutilFilesUpload class="editor-upload-btn" @successCBK="filesSuccessCBK" />
 </template>
 <script>
 
-import MutilImageUpload from './components/MutilImageUpload'
-import { savePhotoList } from '@/api/newsphotos' // 保存图片到指定新闻类别下
+import MutilFilesUpload from './components/MutilFilesUpload'
+import { saveFileList } from '@/api/vcifiles' // 保存图片到指定新闻类别下
 
 export default {
-  name: 'NewsImageUpload',
-  components: { MutilImageUpload },
+  name: 'FilesUpload',
+  components: { MutilFilesUpload },
   props: {
-    nid: {
+    parentId: {
       type: String,
       default: ''
     }
@@ -19,8 +19,8 @@ export default {
   data() { return {} },
   computed: { },
   methods: {
-    imageSuccessCBK(dataList) {
-      const photoList = []
+    filesSuccessCBK(dataList) {
+      const fileList = []
       // Js的遍历Map对象
       const objKeyArr = Object.keys(dataList)
       for (let i = 0, len = objKeyArr.length; i < len; i++) {
@@ -29,10 +29,10 @@ export default {
         tempData.fileSize = dataList[objKeyArr[i]].fileSize
         tempData.serverPath = dataList[objKeyArr[i]].serverPath
         tempData.extName = dataList[objKeyArr[i]].extName
-        photoList.push(tempData)
+        fileList.push(tempData)
       }
 
-      savePhotoList({ nid: this.nid, photoList: photoList }).then(res => {
+      saveFileList({ fileList }).then(res => {
         // 上传成功调用图片列表也方法刷新列表页面
         this.$emit('successUploadCBK')
       }).catch(err => {

@@ -1,17 +1,18 @@
 import request from '@/utils/request'
 
 // 查询新闻图片列表
-export function fetchPhotoList(query) {
+export function fetchFileList(query) {
   return request({
-    url: 'manage/photoList',
+    url: 'manage/fileList',
     method: 'get',
     params: query
   })
 }
 
-export function savePhotoList(data) {
+export function saveFileList(data) {
+  alert('OK')
   return request({
-    url: 'manage/savePhotos',
+    url: 'manage/saveFiles',
     method: 'post',
     data
   })
@@ -27,9 +28,9 @@ export function updatePhotoSindex(data) {
 }
 
 // 根据图片ID批量删除图片
-export function deletePhotosByPid(data) {
+export function deleteVciFiles(data) {
   return request({
-    url: 'manage/deletePhotosByPid',
+    url: 'manage/deleteVciFiles',
     method: 'post',
     data
   })

@@ -1,9 +1,17 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <NewsImageUpload ref="imageUpload" :nid="listQuery.nid" @successUploadCBK="getList" />
       <div class="editor-upload-btn">
-        <el-button style="margin-left: 10px;" type="warning" icon="el-icon-delete" @click="deleteSelectionAll">
+      <el-input class="filter-item"  v-model="listQuery.name" placeholder="File Name" style="width: 280px;" @keyup.enter.native="handleFilter" />
+      </div>
+      <div class="editor-upload-btn">
+      <el-button class="filter-item" type="info" icon="el-icon-search" @click="handleFilter">
+        搜索
+      </el-button>
+      </div>
+      <FilesUpload ref="fileUpload" :parentId="listQuery.fid" @successUploadCBK="getList" />
+      <div class="editor-upload-btn">
+        <el-button type="warning" icon="el-icon-delete" @click="deleteSelectionAll">
           删除选择行
         </el-button>
       </div>
@@ -15,20 +23,14 @@
         width="50"
         align="center"
       />
-      <el-table-column align="center" label="封面" min-width="10%">
-        <!-- 图片的显示 -->
-        <template slot-scope="scope">
-          <img :src="scope.row.imgPath" min-width="70" height="40" :onerror="errorUserPhoto">
-        </template>
-      </el-table-column>
       <el-table-column align="left" label="文件名称" min-width="25%" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <span>{{ scope.row.ptitle }}</span>
+          <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="left" label="文件类型" min-width="25%" :show-overflow-tooltip="true">
+      <el-table-column align="left" label="文件类型" min-width="5%" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <span>{{ scope.row.ptitle }}</span>
+          <span>{{ scope.row.extName }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="大小" min-width="10%" :show-overflow-tooltip="true">
@@ -36,9 +38,9 @@
           <span>{{ scope.row.psize }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="下载地址" min-width="8%">
+      <el-table-column align="center" label="下载地址" min-width="30%">
         <template slot-scope="{row}">
-          <el-input v-model="row.sindex" size="small" class="sindex-input" @blur="handleModifyIndex(row)" />
+          <span>http://vcintegration.com/download?fileId={{ row.fid}}</span>
         </template>
       </el-table-column>
 
@@ -56,16 +58,16 @@
 
 <script>
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
-import NewsImageUpload from '@/components/ImageUpload' // Secondary package based on el-pagination
+import FilesUpload from '@/components/FilesUpload' // Secondary package based on el-pagination
 
-import { fetchPhotoList, updatePhotoSindex, deletePhotosByPid } from '@/api/newsphotos' // 引入需要请求的路径
+import { fetchFileList, deleteVciFiles } from '@/api/vcifiles' // 引入需要请求的路径
 
 import { Message } from 'element-ui'
 import userPhoto from '@/assets/default_images/default.jpg' // 设置加载失败后的默认图片
 
 export default {
-  name: 'EventsImgList',
-  components: { Pagination, NewsImageUpload },
+  name: 'VciFilesList',
+  components: { Pagination, FilesUpload },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -81,7 +83,8 @@ export default {
       total: 0,
       listLoading: true,
       listQuery: {
-        nid: this.$route.params.id,
+        name: '',
+        fid: this.$route.params.fid,
         page: 1,
         limit: 10
       },
@@ -95,7 +98,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchPhotoList(this.listQuery).then(response => {
+      fetchFileList(this.listQuery).then(response => {
         this.list = response.data.items
         this.total = response.data.total
         this.listLoading = false
@@ -110,18 +113,6 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
-
-    handleModifyIndex(row) {
-      const params = { pid: row.pid, sindex: row.sindex }
-      updatePhotoSindex(params).then(() => {
-        this.$message({
-          message: '操作成功!',
-          type: 'success'
-        })
-        this.getList()
-      })
-    },
-
     deleteSelectionAll() {
       const length = this.multipleSelection.length
       if (length <= 0) {
@@ -133,14 +124,14 @@ export default {
         return false
       }
 
-      const pids = this.multipleSelection.map(item => item.pid).join() // 获取所有选中行的id组成的字符串，以逗号分隔
+      const fids = this.multipleSelection.map(item => item.fid).join() // 获取所有选中行的id组成的字符串，以逗号分隔
       this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        console.log(pids)
-        deletePhotosByPid({ pids: pids }).then(response => {
+        console.log(fids)
+        deleteVciFiles({ fids: fids }).then(response => {
           if (response.flag === 1) {
             Message({
               message: '删除成功!',
@@ -175,6 +166,10 @@ export default {
 <style scoped>
   .sindex-input >>> input{
     width: 50%;
+    text-align: center;
+  }
+  .sindex-input-address >>> input{
+    width: 100%;
     text-align: center;
   }
   .editor-upload-btn {
