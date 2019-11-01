@@ -36,7 +36,7 @@
       </el-table-column>
       <el-table-column align="center" label="下载地址" min-width="30%">
         <template slot-scope="{row}">
-          <span>http://vcintegration.com/download?fileId={{ row.fid }}</span>
+          <span>http://www.vcintegration.com/download?fileId={{ row.fid }}</span>
         </template>
       </el-table-column>
 
