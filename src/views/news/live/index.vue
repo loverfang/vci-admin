@@ -1,11 +1,11 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.title" placeholder="Success Stories Title" style="width: 280px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.title" placeholder="Live Broadcast Title" style="width: 280px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-button class="filter-item" type="info" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
-      <router-link :to="{path:'/news/stories/create'}">
+      <router-link :to="{path:'/news/live/create'}">
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit">
           添加
         </el-button>
@@ -26,11 +26,19 @@
           <img :src="scope.row.coverImg" min-width="70" height="40" :onerror="errorUserPhoto">
         </template>
       </el-table-column>
+
+      <el-table-column align="center" label="顶部图片" min-width="10%" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          <img :src="scope.row.authorImg" min-width="70" height="40" :onerror="errorUserPhoto">
+        </template>
+      </el-table-column>
+
       <el-table-column align="left" label="标题" min-width="25%" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <span>{{ scope.row.title }}</span>
         </template>
       </el-table-column>
+
       <el-table-column align="center" label="排序索引" min-width="8%">
         <template slot-scope="{row}">
           <el-input v-model="row.sindex" size="small" class="sindex-input" @blur="handleModifyIndex(row)"/>
@@ -46,24 +54,31 @@
           <span>{{ scope.row.pubtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" min-width="25%">
+      <el-table-column align="center" label="操作" min-width="30%">
         <template slot-scope="scope">
           <!-- 要在最右边区域切换显示页面就用router-link标签 -->
-          <router-link :to="'/news/stories/edit/' + scope.row.nid">
+          <router-link :to="'/news/live/edit/' + scope.row.nid">
             <el-button type="primary" size="small" icon="el-icon-edit">
               编辑
             </el-button>
           </router-link>
-          <router-link :to="'/news/stories/imglist/' + scope.row.nid">
+          <router-link :to="'/news/live/imglist/' + scope.row.nid">
           <el-button type="success" size="small" class="el-icon-picture">
             图片管理
           </el-button>
           </router-link>
-          <router-link :to="'/news/stories/pdflist/' + scope.row.nid">
+          <!--
+          <router-link :to="'/news/live/pdflist/' + scope.row.nid">
           <el-button type="danger" size="small">
             <svg-icon icon-class="pdf" />
-            PDF文件管理
+            PDF管理
           </el-button>
+          </router-link>
+          -->
+          <router-link :to="'/news/live/adlist/' + scope.row.nid">
+            <el-button type="primary" size="small" icon="el-icon-edit">
+              广告管理
+            </el-button>
           </router-link>
         </template>
       </el-table-column>
@@ -82,7 +97,7 @@ import { Message } from 'element-ui'
 
 import userPhoto from '@/assets/default_images/default.jpg' // 设置加载失败后的默认图片
 export default {
-  name: 'StoriesList',
+  name: 'EventsList',
   components: { Pagination },
   filters: {
     statusFilter(status) {
@@ -100,7 +115,7 @@ export default {
       listLoading: true,
       listQuery: {
         title: null,
-        ntype: 'stories',
+        ntype: 'lives',
         page: 1,
         limit: 10
       },

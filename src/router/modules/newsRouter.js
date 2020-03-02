@@ -187,6 +187,56 @@ const newsRouter = {
           meta: { title: 'Success Stories管理', icon: 'list' }
         }
       ]
+    },
+    {
+      path: 'live',
+      redirect: '/news/live/list',
+      name: 'Live',
+      component: () => import('@/views/news/index'),
+      meta: { title: 'Live Broadcast', icon: 'list' },
+      children: [
+        {
+          path: 'create',
+          component: () => import('@/views/news/live/create'),
+          name: 'CreateLive',
+          meta: { title: 'Create Live', icon: 'example' },
+          hidden: true
+        },
+        {
+          path: 'edit/:id(\\d+)',
+          component: () => import('@/views/news/live/edit'),
+          name: 'EditLive',
+          meta: { title: 'Edit Live' },
+          hidden: true
+        },
+        {
+          path: 'imglist/:id(\\d+)',
+          component: () => import('@/views/news/live/imglist'),
+          name: 'LiveImgList',
+          meta: { title: 'Live 图片管理' },
+          hidden: true
+        },
+        {
+          path: 'pdflist/:id(\\d+)',
+          component: () => import('@/views/news/live/pdflist'),
+          name: 'LivePdfList',
+          meta: { title: 'Live PDF文件管理' },
+          hidden: true
+        },
+        {
+          path: 'adlist/:id(\\d+)',
+          component: () => import('@/views/news/live/adlist'),
+          name: 'LiveAList',
+          meta: { title: 'Live 广告管理' },
+          hidden: true
+        },
+        {
+          path: 'list',
+          component: () => import('@/views/news/live/index'),
+          name: 'LiveBroadcast',
+          meta: { title: 'Live Broadcast管理' }
+        }
+      ]
     }
   ]
 }

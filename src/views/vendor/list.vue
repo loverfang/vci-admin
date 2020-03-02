@@ -40,12 +40,12 @@
         <template slot-scope="scope">
           <!-- 要在最右边区域切换显示页面就用router-link标签 -->
           <router-link :to="'/supplier/vendor/edit/' + scope.row.pid">
-            <el-button type="primary" size="small" icon="el-icon-edit">
+            <el-button type="primary" size="mini" icon="el-icon-edit">
               编辑
             </el-button>
           </router-link>
           <router-link :to="'/supplier/vendor/pdflist/' + scope.row.pid">
-            <el-button type="" size="small" icon="el-icon-delete">
+            <el-button type="" size="mini" icon="el-icon-delete">
               PDF文件管理
             </el-button>
           </router-link>

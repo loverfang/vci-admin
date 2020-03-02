@@ -1,11 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.title" placeholder="视频名称" style="width: 280px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-button class="filter-item" type="info" icon="el-icon-search" @click="handleFilter">
-        搜索
-      </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit"  @click="handleCreate">
         添加
       </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="warning" icon="el-icon-delete" @click="deleteSelectionAll">
@@ -19,103 +15,76 @@
         width="50"
         align="center"
       />
-      <el-table-column align="center" label="预览" min-width="10%">
+      <el-table-column align="center" label="封面" min-width="10%">
         <template slot-scope="scope">
-          <img v-if="scope.row.coverImg !== null" :src="scope.row.coverImg" min-width="70" height="40" :onerror="errorUserPhoto">
-          <img v-if="scope.row.coverImg === null" :src="userPhoto" min-width="70" height="40">
+          <img :src="scope.row.coverImg" min-width="70" height="40" :onerror="errorUserPhoto">
         </template>
       </el-table-column>
-      <el-table-column align="left" label="视频标题" min-width="20%" :show-overflow-tooltip="true">
+      <el-table-column align="center" label="广告名称" min-width="20%" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <span>{{ scope.row.title }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="left" label="播放链接" min-width="35%" :show-overflow-tooltip="true">
+      <el-table-column align="left" label="链接地址" min-width="35%" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <span>{{ scope.row.vurl }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="所需场次数" min-width="10%" :show-overflow-tooltip="true">
-        <template slot-scope="scope">
-          <span>{{ scope.row.needcount }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="排序索引" min-width="10%">
-        <template slot-scope="{row}">
-          <el-input v-model="row.sindex" size="small" class="sindex-input" @blur="handleModifyIndex(row)" />
+          <span>{{ scope.row.link }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="发布时间" min-width="10%">
         <template slot-scope="scope">
-          <span>{{ scope.row.addtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span>{{ scope.row.uptime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" min-width="10%">
+      <el-table-column align="center" label="操作" min-width="8%">
         <template slot-scope="{row}">
-          <el-button type="primary" size="small" icon="el-icon-edit" @click="handleUpdate(row)">编辑</el-button>
+        <el-button type="primary" size="small" icon="el-icon-edit" @click="handleUpdate(row)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
     <div align="right">
       <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
     </div>
-
     <!-- 添加编辑弹出框 -->
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" top="5vh" @close="closeDialog">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" top="12vh">
       <el-form ref="dataForm" :rules="rules" :model="postForm" label-position="left" label-width="120px" min-width="98%">
         <el-row :gutter="10" height="30px;">
-          <el-col :span="15">
-            <el-form-item label="视频名称" prop="title">
+          <el-col :span="12">
+            <el-form-item label="广告标题" prop="name">
               <el-input v-model="postForm.title" />
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="10" height="30px;">
-          <el-col :span="15">
-            <el-form-item label="播放地址" prop="vurl">
-              <el-input v-model="postForm.vurl" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10" height="30px;">
-          <el-col :span="15">
-            <el-form-item label="所需次数" prop="needcount">
-              <el-input v-model="postForm.needcount" v-only-number="{max:10000,min:0,precision:0}" />
-            </el-form-item>
-          </el-col>
-        </el-row>
         <el-row :gutter="10">
-          <el-col :span="15">
-            <el-form-item label="视频封面图">
+          <el-col :span="20">
+            <el-form-item label="链接地址">
+              <el-input v-model="postForm.link" type="textarea"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="10">
+          <el-col :span="12">
+            <el-form-item label="广告封面">
               <el-upload
                 class="cover-uploader"
                 action="/api/manage/uploadImage"
                 :show-file-list="false"
                 list-type="picture"
                 :on-success="coverHandleSuccess"
-                :before-upload="coverBeforeUpload"
-              >
+                :before-upload="coverBeforeUpload">
                 <div slot="tip" class="el-upload__tip">上传成功后,点击图片重新上传</div>
                 <img v-if="postForm.coverImg" :src="postForm.coverImg" class="avatar">
-                <i v-else class="el-icon-plus cover-uploader-icon" />
+                <i v-else class="el-icon-plus cover-uploader-icon"></i>
               </el-upload>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="10" height="30px;">
-          <el-col :span="24">
-            <el-form-item label="视频简介" prop="memo">
-              <Tinymce ref="editor" v-model="postForm.memo" :height="120" />
-            </el-form-item>
-          </el-col>
-        </el-row>
       </el-form>
-
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false" size="mini">
+        <el-button @click="dialogFormVisible = false">
           取消
         </el-button>
-        <el-button type="primary" size="mini" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
           确认保存
         </el-button>
       </div>
@@ -124,60 +93,72 @@
 </template>
 
 <script>
-import Tinymce from '@/components/Tinymce'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
-import { fetchList, saveVideo, updateVideo, updateVideoSindex, deleteVideo } from '@/api/videos' // 引入需要请求的路径
+import { fetchList, saveAd, updateAd, deleteAd } from '@/api/newsad.js' // 引入需要请求的路径
 
 import { Message } from 'element-ui'
+
 import userPhoto from '@/assets/default_images/default.jpg' // 设置加载失败后的默认图片
 
+const defaultForm = {
+  pid: undefined,
+  nid: '',
+  title: '',
+  link: '',
+  coverImg: ''
+}
+
 export default {
-  name: 'VendorPdfList',
-  components: { Pagination, Tinymce },
+  name: 'EventsPdfList',
+  components: { Pagination },
   filters: {
     statusFilter(status) {
       const statusMap = {
         NORMAL: 'success',
-        WAITCHECK: 'warning',
-        LOCKED: 'warning'
+        WAITCHECK: 'warning'
       }
       return statusMap[status]
     }
   },
   data() {
+    const validateRequire = (rule, value, callback) => {
+      if (value === '') {
+        this.$message({
+          message: rule.field + '为必传项',
+          type: 'error'
+        })
+        callback(new Error(rule.field + '为必传项'))
+      } else {
+        callback()
+      }
+    }
     return {
       list: null,
       total: 0,
       listLoading: true,
       listQuery: {
+        id: this.$route.params && this.$route.params.id,
+        source: 'news',
         page: 1,
         limit: 10
       },
-      postForm: {
-        vid: undefined,
-        title: '',
-        vurl: '',
-        needcount: '1',
-        memo: '',
-        coverImg: ''
-      },
+      postForm: Object.assign({}, defaultForm),
       textMap: {
-        update: '编辑文件信息',
-        create: '添加新文件'
+        update: '编辑广告信息',
+        create: '添加新广告'
       },
       dialogFormVisible: false,
       dialogStatus: '',
-      userPhoto: userPhoto,
       errorUserPhoto: 'this.src="' + userPhoto + '"',
       multipleSelection: [], // 存放选中的数据
       fileList: [],
       rules: {
-        title: [{ required: true, message: 'title is required', trigger: 'blur' }],
-        vurl: [{ required: true, message: 'vurl is required', trigger: 'blur' }]
+        name: [{ validator: validateRequire }]
       }
     }
   },
   created() {
+    this.postForm.nid = this.$route.params && this.$route.params.id
     this.getList()
   },
   methods: {
@@ -200,6 +181,7 @@ export default {
       this.multipleSelection = val
     },
     handleCreate() {
+      // this.resetTemp()
       this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
@@ -210,7 +192,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          saveVideo(this.postForm).then(() => {
+          saveAd(this.postForm).then(() => {
             this.getList()
             this.dialogFormVisible = false
             this.$message({
@@ -223,9 +205,7 @@ export default {
     },
 
     handleUpdate(row) {
-      this.resetTemp()
       this.postForm = Object.assign({}, row) // copy obj
-      this.fileList = [{ url: row.pdfPath, name: row.pdfname }]
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -237,7 +217,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.postForm)
-          updateVideo(tempData).then(() => {
+          updateAd(tempData).then(() => {
             this.getList()
             this.dialogFormVisible = false
             this.$message({
@@ -246,17 +226,6 @@ export default {
             })
           })
         }
-      })
-    },
-
-    handleModifyIndex(row) {
-      const params = { vid: row.vid, sindex: row.sindex }
-      updateVideoSindex(params).then(() => {
-        this.$message({
-          message: '操作成功!',
-          type: 'success'
-        })
-        this.getList()
       })
     },
 
@@ -270,14 +239,14 @@ export default {
         })
         return false
       }
-      const vids = this.multipleSelection.map(item => item.vid).join() // 获取所有选中行的id组成的字符串，以逗号分隔
-      this.$confirm('此操作将永久删除选中记录, 是否继续?', '提示', {
+      const ids = this.multipleSelection.map(item => item.id).join() // 获取所有选中行的id组成的字符串，以逗号分隔
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        console.log(vids)
-        deleteVideo({ vids: vids }).then(response => {
+        console.log(ids)
+        deleteAd({ ids: ids, source: 'news' }).then(response => {
           if (response.flag === 1) {
             Message({
               message: '删除成功!',
@@ -306,14 +275,14 @@ export default {
     },
 
     resetTemp() {
-      this.postForm = {
-        vid: undefined,
+      this.defaultForm = {
+        pid: undefined,
+        nid: '',
         title: '',
-        vurl: '',
-        needcount: '1',
-        memo: '',
+        link: '',
         coverImg: ''
       }
+      this.postForm = Object.assign({}, this.defaultForm) // copy obj
     },
 
     coverHandleSuccess(res, file) {
@@ -334,29 +303,28 @@ export default {
       return isJPG && isLt2M
     },
 
-    closeDialog() {
-      this.$router.go(0)
+    pdfHandlerLimit(files, fileList) {
+      this.$message({
+        type: 'error',
+        message: '请先删除原有文件,然后重新上传!'
+      })
+    },
+
+    pdfHandleSuccess(res, file) {
+      // this.imageUrl = URL.createObjectURL(file.raw)
+      file.name = res.data.fileName
+      this.postForm.psize = res.data.fileSize
+      this.postForm.pdfname = res.data.fileName
+      this.postForm.pdfPath = res.data.serverPath
     }
   }
 }
 </script>
 
 <style scoped>
-   .sindex-input >>> input{
-     width: 50%;
-     text-align: center;
-   }
-
-   .el-form >>> .el-form-item label:after {
-     content: " ";
-     display: inline-block;
-     width: 100%;
-   }
-
-  .el-form >>> .el-form-item__label {
-    text-align:justify;
-    text-align:right;
-    height: 40px;
+  .sindex-input >>> input{
+    width: 50%;
+    text-align: center;
   }
 
   .cover-uploader >>> .el-upload {

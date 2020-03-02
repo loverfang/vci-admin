@@ -108,7 +108,6 @@ export function updateStories(data) {
   })
 }
 
-
 // 新增Stories类型的新闻
 export function createEvents(data) {
   return request({
@@ -122,6 +121,24 @@ export function createEvents(data) {
 export function updateEvents(data) {
   return request({
     url: 'manage/updateEvents',
+    method: 'post',
+    data
+  })
+}
+
+// 新增Live类型的新闻
+export function createLive(data) {
+  return request({
+    url: 'manage/createLive',
+    method: 'post',
+    data
+  })
+}
+
+// 修改Live类型的新闻
+export function updateLive(data) {
+  return request({
+    url: 'manage/updateLive',
     method: 'post',
     data
   })

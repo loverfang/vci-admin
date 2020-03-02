@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="listQuery.cname" placeholder="类型名称" style="width: 280px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+      <el-button class="filter-item" type="info" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
@@ -10,14 +10,7 @@
       </el-button>
     </div>
 
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%;"
-    >
+    <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%;">
       <el-table-column label="类别名称" min-width="20%" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.cname }}</span>

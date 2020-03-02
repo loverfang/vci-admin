@@ -127,6 +127,19 @@ export const constantRoutes = [
     component: Layout,
     meta: { title: '会员信息系统', icon: 'user' },
     children: [
+
+      {
+        path: 'tfctype',
+        name: 'tfctype',
+        component: () => import('@/views/tfctype/index'),
+        meta: { title: 'TFC类型', icon: 'eye-open' }
+      },
+      {
+        path: 'tfcvideos',
+        name: 'tfcvideos',
+        component: () => import('@/views/tfcvideos/index'),
+        meta: { title: 'TFC/橙色供应链行动', icon: 'eye-open' }
+      },
       {
         path: 'videos',
         name: 'Videos',
